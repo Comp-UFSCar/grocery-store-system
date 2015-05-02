@@ -67,7 +67,7 @@ public class Cliente {
 		//corrigir
 		//matches letter + alphanumeric(s) + @ + letter + alphanumeric(s) + ".com" (validating only if the following characters are ".br")
 		try{
-			if(!email.matches("([a-z])([a-z]|\\d)*@([a-z])([a-z]|\\d)*(.com)(?=.br)"))
+			if(!email.matches("([a-z])([a-z]|\\d)*@([a-z])([a-z]|\\d)*.com(.br)*"))
 				throw new RuntimeException("E-mail invalido " + email);
 			
 			this.email = email;

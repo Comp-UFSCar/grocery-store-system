@@ -30,7 +30,12 @@ public class TesteCliente {
 		Cliente c = new Cliente("nome", "cpf", "endereco", "(14)1234-5678", "bla@1do.com", 0);
 	}
 	@Test
-	public void test() {
+	public void acceptableEmail1() {
+		Cliente c = new Cliente("nome", "cpf", "endereco", "(14)1234-5678", "a234@a.com.br", 0);
+	}
+	@Test
+	public void acceptableEmail2() {
 		Cliente c = new Cliente("nome", "cpf", "endereco", "(14)1234-5678", "a@a.com", 0);
 	}
+	
 }
