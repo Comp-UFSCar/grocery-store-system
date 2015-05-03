@@ -10,7 +10,12 @@ public class Produto {
 	private double estoque;
 	private int status;
 
-	Produto (int codigo, String descricao, double precoCompra, double precoVenda,
+	// variaveis de controle para status
+	public static final int ativo = 1;
+	public static final int inativo = 0;
+
+	// construtor completo
+	public Produto (int codigo, String descricao, double precoCompra, double precoVenda,
 			 String unidade, double estoque, int status){
 
 		setCodigo(codigo);
@@ -26,32 +31,24 @@ public class Produto {
 		return codigo;
 	}
 
-	public void setCodigo(int codigo) {
-		try {
-			if(codigo <= 0)
-				throw new RuntimeException("Codigo invalido " + codigo);
+	public void setCodigo(int codigo) throws RuntimeException {
+		// codigo eh inteiro e > 0
+		if(codigo <= 0)
+			throw new RuntimeException("Codigo invalido " + codigo);
 
-			this.codigo = codigo;
-		}
-		catch (RuntimeException re){
-			System.err.println(re);
-		}
+		this.codigo = codigo;
 	}
 
 	public String getDescricao() {
 		return descricao;
 	}
 
-	public void setDescricao(String descricao) {
-		try{
-			if(!(descricao.matches("[\\w|\\s]{3,64}")))
-				throw new RuntimeException("Descricao invalida: " + descricao);
+	public void setDescricao(String descricao) throws RuntimeException {
+		// apenas alfanumericos entre 3 e 64 caracteres
+		if(!(descricao.matches("[\\w|\\s]{3,64}")))
+			throw new RuntimeException("Descricao invalida: " + descricao);
 
-			this.descricao = descricao;
-		}
-		catch (RuntimeException re){
-			System.err.println(re);
-		}
+		this.descricao = descricao;
 	}
 
 	public double getPrecoCompra() {
@@ -59,14 +56,11 @@ public class Produto {
 	}
 
 	public void setPrecoCompra(double precoCompra) {
-		try{
-			if(precoCompra <= 0)
-				throw new RuntimeException("Preco de compra invalido: " + precoCompra);
+		// preco de compra > 0
+		if(precoCompra <= 0)
+			throw new RuntimeException("Preco de compra invalido: " + precoCompra);
 
-			this.precoCompra = precoCompra;
-		} catch (RuntimeException re){
-			System.err.println(re);
-		}
+		this.precoCompra = precoCompra;
 	}
 
 	public double getPrecoVenda() {
@@ -74,14 +68,10 @@ public class Produto {
 	}
 
 	public void setPrecoVenda(double precoVenda) {
-		try{
-			if(precoVenda < this.precoCompra)
-				throw new RuntimeException("Preco de venda invalido: " + precoVenda);
+		// preco de venda > preco de compra
+		if(precoVenda < this.precoCompra)
+			throw new RuntimeException("Preco de venda invalido: " + precoVenda);
 
-			this.precoVenda = precoVenda;
-		} catch (RuntimeException re){
-			System.err.println(re);
-		}
 		this.precoVenda = precoVenda;
 	}
 
@@ -90,14 +80,10 @@ public class Produto {
 	}
 
 	public void setUnidade(String unidade) {
-		try{
-			if(!(unidade.matches("[a-zA-Z]{2}")))
-				throw new RuntimeException("Unidade invalida: " + unidade);
+		if(!(unidade.matches("[a-zA-Z]{2}")))
+			throw new RuntimeException("Unidade invalida: " + unidade);
 
-			this.unidade = unidade;
-		}catch(RuntimeException re){
-			System.err.println(re);
-		}
+		this.unidade = unidade;
 	}
 
 	public double getEstoque() {
@@ -105,14 +91,11 @@ public class Produto {
 	}
 
 	public void setEstoque(double estoque) {
-		try{
-			if(estoque < 0)
-				throw new RuntimeException("Estoque invalido: " + estoque);
+		// estoque >= 0
+		if(estoque < 0)
+			throw new RuntimeException("Estoque invalido: " + estoque);
 
-			this.estoque = estoque;
-		} catch(RuntimeException re){
-			System.err.println(re);
-		}
+		this.estoque = estoque;
 	}
 
 	public int getStatus() {
@@ -120,16 +103,14 @@ public class Produto {
 	}
 
 	public void setStatus(int status) {
-		try {
-			if (!(status == 1 || status == 0))
-				throw new RuntimeException("Status - valor invalido: " + status);
-			if (status == 0 && this.estoque > 0)
-				throw new RuntimeException("Status - nao pode ser desativado, ainda ha estoque");
+		// status pode ser 'ativo' ou 'inativo' (1 ou 0)
+		if (!(status == ativo || status == inativo))
+			throw new RuntimeException("Status - valor invalido: " + status);
+		// status soh pode ser inativo se estoque = 0
+		if (status == inativo && this.estoque > 0)
+			throw new RuntimeException("Status - nao pode ser desativado, ainda ha estoque");
 
-			this.status = status;
-		} catch (RuntimeException re) {
-			System.err.println(re);
-		}
+		this.status = status;
 	}
 
 	public void alteraProduto (int codigo, String descricao, double precoCompra, double precoVenda,
