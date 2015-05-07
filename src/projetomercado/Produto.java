@@ -11,8 +11,8 @@ public class Produto {
 	private int status;
 
 	// variaveis de controle para status
-	public static final int ativo = 1;
-	public static final int inativo = 0;
+	public static final int ATIVO = 1;
+	public static final int INATIVO = 0;
 
 	// construtor completo
 	public Produto (int codigo, String descricao, double precoCompra, double precoVenda,
@@ -103,11 +103,11 @@ public class Produto {
 	}
 
 	public void setStatus(int status) {
-		// status pode ser 'ativo' ou 'inativo' (1 ou 0)
-		if (!(status == ativo || status == inativo))
+		// status pode ser 'ATIVO' ou 'INATIVO' (1 ou 0)
+		if (!(status == ATIVO || status == INATIVO))
 			throw new RuntimeException("Status - valor invalido: " + status);
-		// status soh pode ser inativo se estoque = 0
-		if (status == inativo && this.estoque > 0)
+		// status soh pode ser INATIVO se estoque = 0
+		if (status == INATIVO && this.estoque > 0)
 			throw new RuntimeException("Status - nao pode ser desativado, ainda ha estoque");
 
 		this.status = status;

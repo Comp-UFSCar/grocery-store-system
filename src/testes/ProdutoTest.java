@@ -25,7 +25,7 @@ public class ProdutoTest {
         precoVenda = 5.99;
         unidade = "cm";
         estoque = 10.5;
-        status = Produto.ativo;
+        status = Produto.ATIVO;
 
         p = new Produto(codigo, descricao, precoCompra, precoVenda, unidade, estoque, status);
     }
@@ -97,7 +97,7 @@ public class ProdutoTest {
 
     @Test (expected = RuntimeException.class)
     public void testSetStatus() throws Exception {
-        p.setStatus(Produto.inativo);
+        p.setStatus(Produto.INATIVO);
     }
 
     @Test
