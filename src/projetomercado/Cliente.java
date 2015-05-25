@@ -22,7 +22,7 @@ public class Cliente {
 	}
 	
 	//getters
-	public String nome(){
+	public String getNome(){
 		return this.nome;
 	}
 	
