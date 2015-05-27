@@ -1,10 +1,12 @@
 package projetomercado;
 
+import java.util.ArrayList;
+
 public class Mercado {
 
-	//private Vector<Produto> produtos;
-	//private Vector<Cliente> clientes;
-	//private Vector<RegistroVenda> registrosVendas;
+	private ArrayList<Produto> produtos;
+	private ArrayList<Cliente> clientes;
+	private ArrayList<RegistroVenda> registrosVendas;
 
 	static GerenciamentoProdutos gProdutos = new GerenciamentoProdutos();
 

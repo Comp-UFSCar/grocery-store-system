@@ -6,7 +6,8 @@ public class Cliente {
 	private String endereco;
 	private String telefone;
 	private String email;
-	private int status;
+	private int status; // por que nao boolean?
+	
 	
 	public static final int ATIVO = 1;
 	public static final int INATIVO = 0;

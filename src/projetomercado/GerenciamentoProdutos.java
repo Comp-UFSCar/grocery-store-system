@@ -20,7 +20,7 @@ public class GerenciamentoProdutos {
 
     public void alteraEstoque(int codigo, double estoque){
         try{
-            Produto p = buscaProduto(codigo);
+            Produto p = consultaProdutoPorCodigo(codigo);
             if(p == null)
                 throw new RuntimeException("Produto de codigo " + codigo + " nao encontrado");
             p.setEstoque(estoque);
@@ -30,20 +30,35 @@ public class GerenciamentoProdutos {
         }
     }
 
-    private Produto buscaProduto(int codigo){
+    public Produto consultaProdutoPorCodigo(int codigo){
         for(Produto p : this.produtos){
             if(p.getCodigo() == codigo)
                 return p;
         }
         return null;
     }
-
+    
+    public ArrayList<Integer> consultaPorDescricao(String descricao){
+    	ArrayList<Integer> codigos = new ArrayList<Integer>();
+    	
+    	for(Produto p: this.produtos){
+    		if(p.getDescricao().startsWith(descricao))
+    			codigos.add(p.getCodigo());	
+    	}
+    	
+    	if (codigos.isEmpty())
+    		codigos.add(-1);
+    	
+    	return codigos;
+    }
+    
+    
     public ArrayList<Produto> getProdutos(){
         return this.produtos;
     }
 
     public Produto getProduto(int codigo){
-        return buscaProduto(codigo);
+        return consultaProdutoPorCodigo(codigo);
     }
 
     private boolean validaCodigo(int codigo){
