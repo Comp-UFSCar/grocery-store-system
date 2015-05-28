@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import projetomercado.Cliente;
 
-public class TesteCliente {
+public class ClienteTest {
 	//Note: cpf generated from http://www.geradorcpf.com/
 	static Cliente c = new Cliente("Lu Bu", "15988150241", "endereco", "(14)123456789", "a@a.com", 0);
 	//To be done correctly

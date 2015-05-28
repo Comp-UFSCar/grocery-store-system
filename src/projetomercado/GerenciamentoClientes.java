@@ -3,7 +3,7 @@ package projetomercado;
 import java.util.ArrayList;
 
 public class GerenciamentoClientes {
-    private ArrayList<Cliente> clientes = new ArrayList<Produto>();
+    private ArrayList<Cliente> clientes = new ArrayList<Cliente>();
     public void insereCliente(String nome, String cpf, String endereco,
                               String telefone, String email, int status)
     {
