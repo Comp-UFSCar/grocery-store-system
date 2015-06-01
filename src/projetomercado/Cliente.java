@@ -1,16 +1,19 @@
 package projetomercado;
 
+import java.util.ArrayList;
+
 public class Cliente {
 	private String nome;
 	private String cpf;
 	private String endereco;
 	private String telefone;
 	private String email;
-	private int status; // por que nao boolean?
-	
+	private int status; 
 	
 	public static final int ATIVO = 1;
 	public static final int INATIVO = 0;
+	
+	static ArrayList<Cliente> clientes = new ArrayList<Cliente>();
 	
 	public Cliente(String nome, String cpf, String endereco, String telefone, 
 			String email, int status){
@@ -20,6 +23,22 @@ public class Cliente {
 		setTelefone(telefone);
 		setEmail(email);
 		setStatus(status);
+	}
+	
+	public static void insereCliente(String nome, String cpf, String endereco,
+            String telefone, String email, int status){
+
+		try{
+			if (!validaCpfUnico(cpf)){
+			throw new RuntimeException("CPF invalido: " + cpf + " já foi usado");
+			}
+			
+			Cliente c = new Cliente(nome, cpf, endereco, telefone, email, status);
+			clientes.add(c);
+		} catch (RuntimeException re){
+			//System.err.println(re);
+			re.printStackTrace(System.out);
+		}
 	}
 	
 	//getters
@@ -131,6 +150,23 @@ public class Cliente {
 		setEmail(email);
 		setStatus(status);
 	}
+	
+    private static boolean validaCpfUnico(String cpf){
+    	for (Cliente c : clientes){
+    		if (cpf.equals(c.getCpf()))
+    			return false;
+    	}
+    	return true;
+    }
+    
+    public static Cliente consultaClientePorCpf(String cpf){
+    	for (Cliente c : clientes){
+    		if (cpf.equals(c.getCpf())){
+    			return c;
+    		}
+    	}
+    	return null;    	
+    }
 	
 	
 	
