@@ -1,5 +1,7 @@
 package projetomercado;
 
+import java.util.ArrayList;
+
 public class Mercado {
 	
 	//private static ArrayList<Produto> produtos = Produto.produtos;
@@ -17,7 +19,7 @@ public class Mercado {
 		// insereCliente(nome, cpf,String endereco, telefone, email, status)
 		GerenciadorClientes.insereCliente("Jose Silva", "52882174160", "Rua Episcopal 111", "(16)988886666", "email@email.com", Cliente.ATIVO);
 		
-		GerenciadorProdutos.exibeProduto(GerenciadorProdutos.consultaProdutoPorCodigo(11111));
+		GerenciadorProdutos.listaProdutos();
 		
 		{
 			String numeroRegVenda = "1";
@@ -40,7 +42,9 @@ public class Mercado {
 		}
 		
 		GerenciadorRegistrosVenda.printRegistro(1);
-		GerenciadorProdutos.exibeProduto(GerenciadorProdutos.consultaProdutoPorCodigo(11111));
+		System.out.println("*faturamento: "+GerenciadorRegistrosVenda.buscaPorNumero(1).faturamento());
+		
+		GerenciadorProdutos.listaProdutos();
 		
 		{ 
 			String numeroRegVenda = "2";
@@ -48,7 +52,7 @@ public class Mercado {
 			String dataVenda = "01/06/2015";
 			String codProduto1 = "11111";		// Testar com 11111 e 11112 (nao existe)
 			String qtdProduto1 = "5.0"; 		// Testar com 1.0 e 100.0 (nao tem no estoque)
-			String codProduto2 = "22222";
+			String codProduto2 = "33333";
 			String qtdProduto2 = "0.3f";
 			
 			String registroVenda = numeroRegVenda + ";" + 
@@ -63,39 +67,32 @@ public class Mercado {
 		}
 		
 		GerenciadorRegistrosVenda.printRegistro(2);
-		GerenciadorProdutos.exibeProduto(GerenciadorProdutos.consultaProdutoPorCodigo(11111));
-		
+		System.out.println("*faturamento: " + GerenciadorRegistrosVenda.buscaPorNumero(2).faturamento());
+		GerenciadorProdutos.listaProdutos();
 
-		
-		
-		
-		
-		/*
-		//Produto.listaProdutos();
-		//Produto.alteraEstoque(11111, 0);
-		//Produto.listaProdutos();
-		try{
-			gProdutos.getProduto(11111).setCodigo(-1);
-		}
-		catch (Throwable t)
-		{
-			System.err.println(t);
-		}
-		try{
-			gProdutos.getProduto(11111).setDescricao("ab");
-		} catch (Throwable t)
-		{
-			System.err.println(t);
-		}
-		*/
+		System.out.println("\n\nFaturamento de junho: " + calculaFaturamento(6));
 	}
 
-	public double calculaFaturamento(int mes){
-		return 0.0f;
+	private static double calculaFaturamento(int mes){
+		ArrayList<RegistroVenda> registros;
+		double fat = 0;
+		
+		try {
+			registros = GerenciadorRegistrosVenda.getRegistroDoMes(mes);
+			if (registros == null)
+				return 0;
+			for (RegistroVenda r : registros){
+				fat += r.faturamento();
+			}		
+		} 
+		catch (RuntimeException re){
+			re.printStackTrace(System.out);
+		}
+		return fat;
 	}
 
-	public int[] consultaProdutos(String descricao){
-		return null;
+	public ArrayList<Integer> consultaProdutos(String descricao){
+		return GerenciadorProdutos.consultaPorDescricao(descricao);
 	}
 
 }

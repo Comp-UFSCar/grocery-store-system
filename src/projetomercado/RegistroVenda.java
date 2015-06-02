@@ -199,6 +199,18 @@ public class RegistroVenda {
 	
 	// outros metodos
 	
-	
+	public double faturamento(){
+		double fat = 0;
+		
+		for (int i = 0; i < quantidadeItens; i++){
+			Produto p = produtos.get(i);
+			double qtd = quantidades.get(i);
+			double precoVenda = p.getPrecoVenda() * qtd;
+			double precoCompra = p.getPrecoCompra() * qtd;
+			fat += (precoVenda - precoCompra);
+		}
+		
+		return fat;
+	}
 
 }

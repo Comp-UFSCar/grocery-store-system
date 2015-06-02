@@ -1,6 +1,10 @@
 package projetomercado;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class GerenciadorRegistrosVenda {
 
@@ -52,6 +56,33 @@ public class GerenciadorRegistrosVenda {
 
 	public static ArrayList<RegistroVenda> getRegistros() {
 		return registros;
+	}
+	
+	public static ArrayList<RegistroVenda> getRegistroDoMes (int mes)  {
+		if ((mes <= 0) || (mes > 12))
+			throw new RuntimeException("Mes invalido");
+		
+		ArrayList<RegistroVenda> regs = new ArrayList<RegistroVenda>(); 
+
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		df.setLenient(false);
+				
+		Date inicio, fim;
+		try {
+			inicio = df.parse("01/" + mes + "/2015");
+			fim = df.parse("01/" + (mes + 1) + "/2015");
+			
+			for (RegistroVenda r : registros){
+				if (r.getData().after(inicio) && r.getData().before(fim) || r.getData().equals(inicio)) {
+					regs.add(r);
+				}
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		if (regs.isEmpty())
+			return null;
+		return regs;
 	}
 	
 }
