@@ -10,20 +10,19 @@ public class Mercado {
 	{
 		
 		// insereProduto(codigo, descricao, precoCompra, precoVenda, unidade, estoque, status)
-		Produto.insereProduto(11111, "este eh o produto 1", 1.00, 5.99, "cm", 10.5, Produto.ATIVO);
-		Produto.insereProduto(22222, "e este eh o produto 2", 2.00, 7.99, "kg", 10.5, 1);
-		Produto.insereProduto(33333, "por fim o produto 3", 3.00, 10.99, "mm", 10.5, 1);
+		GerenciadorProdutos.insereProduto(11111, "este eh o produto 1", 1.00, 5.99, "cm", 10.5, Produto.ATIVO);
+		GerenciadorProdutos.insereProduto(22222, "e este eh o produto 2", 2.00, 7.99, "kg", 10.5, 1);
+		GerenciadorProdutos.insereProduto(33333, "por fim o produto 3", 3.00, 10.99, "mm", 10.5, 1);
 		
 		// insereCliente(nome, cpf,String endereco, telefone, email, status)
-		Cliente.insereCliente("Jose Silva", "52882174160", "Rua Episcopal 111", "(16)988886666", "email@email.com", Cliente.ATIVO);
+		GerenciadorClientes.insereCliente("Jose Silva", "52882174160", "Rua Episcopal 111", "(16)988886666", "email@email.com", Cliente.ATIVO);
 		
-		Produto.exibeProduto(Produto.consultaProdutoPorCodigo(11111));
+		GerenciadorProdutos.exibeProduto(GerenciadorProdutos.consultaProdutoPorCodigo(11111));
 		
-		// insereRegistroVenda(str){
 		{
 			String numeroRegVenda = "1";
 			String clienteCpf = "52882174160";
-			String dataVenda = "01/06/2015";
+			String dataVenda = "01/11/2015";
 			String codProduto1 = "11111";		// Testar com 11111 e 11112 (nao existe)
 			String qtdProduto1 = "1.0"; 		// Testar com 1.0 e 100.0 (nao tem no estoque)
 			String codProduto2 = "22222";
@@ -37,20 +36,20 @@ public class Mercado {
 					codProduto2 + ";" +
 					qtdProduto2;
 			
-			RegistroVenda.insereRegistroVenda(registroVenda);
+			GerenciadorRegistrosVenda.insereRegistroVenda(registroVenda);
 		}
 		
-		Produto.exibeProduto(Produto.consultaProdutoPorCodigo(11111));
+		GerenciadorRegistrosVenda.printRegistro(1);
+		GerenciadorProdutos.exibeProduto(GerenciadorProdutos.consultaProdutoPorCodigo(11111));
 		
-		// insereRegistroVenda(str)
 		{ 
 			String numeroRegVenda = "2";
 			String clienteCpf = "52882174160";
 			String dataVenda = "01/06/2015";
 			String codProduto1 = "11111";		// Testar com 11111 e 11112 (nao existe)
-			String qtdProduto1 = "1.0"; 		// Testar com 1.0 e 100.0 (nao tem no estoque)
+			String qtdProduto1 = "5.0"; 		// Testar com 1.0 e 100.0 (nao tem no estoque)
 			String codProduto2 = "22222";
-			String qtdProduto2 = "0.1f";
+			String qtdProduto2 = "0.3f";
 			
 			String registroVenda = numeroRegVenda + ";" + 
 					clienteCpf + ";" + 
@@ -60,11 +59,16 @@ public class Mercado {
 					codProduto2 + ";" +
 					qtdProduto2;
 			
-			RegistroVenda.insereRegistroVenda(registroVenda);
+			GerenciadorRegistrosVenda.insereRegistroVenda(registroVenda);
 		}
 		
+		GerenciadorRegistrosVenda.printRegistro(2);
+		GerenciadorProdutos.exibeProduto(GerenciadorProdutos.consultaProdutoPorCodigo(11111));
 		
-		Produto.exibeProduto(Produto.consultaProdutoPorCodigo(11111));
+
+		
+		
+		
 		
 		/*
 		//Produto.listaProdutos();

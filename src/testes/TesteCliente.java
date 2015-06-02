@@ -1,7 +1,5 @@
 package testes;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 
 import projetomercado.Cliente;
@@ -22,90 +20,89 @@ public class TesteCliente {
 		c.setNome("Monty Python");
 	}
 
-	/*
 	//cpf tests
-	@Test
+	@Test (expected = RuntimeException.class)
 	public void cpfIsTooShort(){
 		c.setCpf("1111111111");
 	}
-	@Test
+	@Test (expected = RuntimeException.class)
 	public void cpfIsTooLong(){
 		c.setCpf("11111111111");
 	}
-	@Test
+	@Test (expected = RuntimeException.class)
 	public void cpfHasNonDigits(){
 		c.setCpf("1111111111a");
 	}
-	@Test
+	@Test (expected = RuntimeException.class)
 	public void cpfIsAll0s(){
 		c.setCpf("00000000000");
 	}
-	@Test
+	@Test (expected = RuntimeException.class)
 	public void cpfIsAll1s(){
 		c.setCpf("11111111111");
 	}
-	@Test
+	@Test (expected = RuntimeException.class)
 	public void cpfIsAll2s(){
 		c.setCpf("22222222222");
 	}
-	@Test
+	@Test (expected = RuntimeException.class)
 	public void cpfIsAll3s(){
 		c.setCpf("33333333333");
 	}
-	@Test
+	@Test (expected = RuntimeException.class)
 	public void cpfIsAll4s(){
 		c.setCpf("44444444444");
 	}
-	@Test
+	@Test (expected = RuntimeException.class)
 	public void cpfIsAll5s(){
 		c.setCpf("55555555555");
 	}
-	@Test
+	@Test (expected = RuntimeException.class)
 	public void cpfIsAll6s(){
 		c.setCpf("66666666666");
 	}
-	@Test
+	@Test (expected = RuntimeException.class)
 	public void cpfIsAll7s(){
 		c.setCpf("77777777777");
 	}
-	@Test
+	@Test (expected = RuntimeException.class)
 	public void cpfIsAll8s(){
 		c.setCpf("88888888888");
 	}
-	@Test
+	@Test (expected = RuntimeException.class)
 	public void cpfIsAll9s(){
 		c.setCpf("99999999999");
 	}
-	@Test
+	@Test (expected = RuntimeException.class)
 	public void cpfHas10thDigitWrong(){
 		c.setCpf("15988150231");
 	}
-	@Test
+	@Test (expected = RuntimeException.class)
 	public void cpfHas11thDigitWrong(){
 		c.setCpf("15988150242");
 	}
-	@Test
+	@Test 
 	public void cpfValid(){
 		c.setCpf("15988150241");
 	}
 	
 	//telefone tests
-	@Test
+	@Test (expected = RuntimeException.class)
 	public void telHasMoreThan10digits(){
 		c.setTelefone("(14)12345678910");
 	}
 	
-	@Test
+	@Test (expected = RuntimeException.class)
 	public void telHasLessThan9digits(){
 		c.setTelefone("(14)12345678");
 	}
 	
-	@Test
+	@Test (expected = RuntimeException.class)
 	public void telHasNoParenthesis(){
 		c.setTelefone("14123456789");;
 	}
 	
-	@Test
+	@Test (expected = RuntimeException.class)
 	public void telHasDash(){
 		c.setTelefone("(14)12345-6789");;
 	}
@@ -117,28 +114,28 @@ public class TesteCliente {
 	
 	//e-mail tests
 	
-	@Test
+	@Test (expected = RuntimeException.class)
 	public void emailHasNoUser() {
 		c.setEmail("@a.com");
 	}
 	
-	@Test
+	@Test (expected = RuntimeException.class)
 	public void emailsHasNoDomain() {
 		c.setEmail("a@.com");
 	}
-	@Test
+	@Test (expected = RuntimeException.class)
 	public void emailHasNoAcceptableComplement1() {
 		c.setEmail("a@a.com.uk");
 	}
-	@Test
+	@Test (expected = RuntimeException.class)
 	public void emailHasNoAcceptableComplement2() {
 		c.setEmail("a@a.co");
 	}
-	@Test
+	@Test (expected = RuntimeException.class)
 	public void emailsUserStartsWithNumber() {
 		c.setEmail("1a@a.com");
 	}
-	@Test
+	@Test (expected = RuntimeException.class)
 	public void emailsDomainStartsWithNumber() {
 		c.setEmail("a@1a.com");
 	}
@@ -150,5 +147,4 @@ public class TesteCliente {
 	public void emailAccepted2() {
 		c.setEmail("a@a.com.br");
 	}
-	*/
 }

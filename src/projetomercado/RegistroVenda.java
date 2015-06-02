@@ -4,29 +4,17 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class RegistroVenda {
 	private int numero;
-	private String data;
+	private Date data;
 	private int quantidadeItens;
 	private ArrayList<Double> quantidades = new ArrayList<Double>();
 	private ArrayList<Produto> produtos = new ArrayList<Produto>();
 	private Cliente cliente;
 	private String registro;
 	
-	static ArrayList<RegistroVenda> registros = new ArrayList<RegistroVenda>();
-	
-	public static void insereRegistroVenda (String str){
-		try {
-			RegistroVenda regVenda = new RegistroVenda(str);		
-			registros.add(regVenda);
-		}
-		catch (RuntimeException re)
-        {
-    		//System.err.println(re);
-            re.printStackTrace(System.out);
-        }		
-	}
 	
 	public String getRegVenda(){
 		String s = String.valueOf(numero);
@@ -35,7 +23,7 @@ public class RegistroVenda {
 		s += ";" + String.valueOf(quantidadeItens);
 		
 		for (int i = 0; i < quantidadeItens; i++){
-			s += ";" + produtos.get(i).getCodigo();
+			s += ";" + getProdutos().get(i).getCodigo();
 			s += ";" + String.valueOf(quantidades.get(i));
 		}
 		
@@ -77,10 +65,10 @@ public class RegistroVenda {
 		if (codigo <= 0)
 			throw new RuntimeException ("Codigo de registro de venda invalido: negativo ou zero");
 		
-		if (registros.isEmpty())
+		if (GerenciadorRegistrosVenda.getRegistros().isEmpty())
 			return;
 		
-		for (RegistroVenda r : registros){
+		for (RegistroVenda r : GerenciadorRegistrosVenda.getRegistros()){
 			if (codigo == r.getCodigo())
 				throw new RuntimeException ("Codigo de registro de venda invalido: repetido");
 		}
@@ -88,7 +76,7 @@ public class RegistroVenda {
 	}
 
 	private void validaCpfCliente(String cpf){
-		Cliente c = Cliente.consultaClientePorCpf(cpf);
+		Cliente c = GerenciadorClientes.consultaClientePorCpf(cpf);
 		if (c == null)
 			throw new RuntimeException ("CPF nao encontrado");
 	}
@@ -117,7 +105,7 @@ public class RegistroVenda {
 			cod = Integer.parseInt(partes[i]);
 			qtd = Double.parseDouble(partes[i+1]);
 
-			produto = Produto.consultaProdutoPorCodigo(cod);
+			produto = GerenciadorProdutos.consultaProdutoPorCodigo(cod);
 			if (produto == null){
 				throw new RuntimeException("Produto codigo " + cod + " nao encontrado");
 			}
@@ -136,13 +124,19 @@ public class RegistroVenda {
 		numero = Integer.parseInt(regCodigoVenda);
 	}
 
-	private void setDataVenda(String regDataVenda) {
-		data = regDataVenda;
+	private void setDataVenda(String regDataVenda) {	
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		df.setLenient(false);
+		try {
+			data = df.parse(regDataVenda);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void setQuantidadesEProdutos(String regProdutosQuantidades) {
 		String[] partes = regProdutosQuantidades.split(";");
-		int quantidadeItens = partes.length/2;
+		quantidadeItens = partes.length/2;
 
 		Produto produto;
 		int cod;
@@ -152,20 +146,20 @@ public class RegistroVenda {
 		// reduz estoque e adiciona nos arrays
 		
 		// Obs: se já chegou aqui é pq passou na validação (produto encontrado e qtd>estoque)
-		for (int i = 0 ; i < quantidadeItens; i+=2){
+		for (int i = 0 ; i <= quantidadeItens; i+=2){
 			cod = Integer.parseInt(partes[i]);
 			qtd = Double.parseDouble(partes[i+1]);
 
-			produto = Produto.consultaProdutoPorCodigo(cod);
+			produto = GerenciadorProdutos.consultaProdutoPorCodigo(cod);
 			produto.reduzEstoque(qtd);
-			produtos.add(produto);
+			getProdutos().add(produto);
 			quantidades.add(qtd);
 		}
 		
 	}
 	
 	private void setCliente(String regCpfCliente) {
-		cliente = Cliente.consultaClientePorCpf(regCpfCliente);
+		cliente = GerenciadorClientes.consultaClientePorCpf(regCpfCliente);
 	}
 	
 	
@@ -181,24 +175,30 @@ public class RegistroVenda {
 	private void setRegistro(String registroVenda) {
 		registro = registroVenda;
 	}
+
+
+	public ArrayList<Produto> getProdutos() {
+		return produtos;
+	}
+
+	public ArrayList<Double> getQuantidades() {
+		return quantidades;
+	}
+
+	public int getQuantidadeItens() {
+		return quantidadeItens;
+	}
 	
-	/*public void printRegistro(){
-		
-        System.out.println(
-                "----------------------------------------\n" +
-    	        //"Codigo: " + p.codigo + "\n" +
-    	        "Numero: " + numero + "\n" +
-    	        "Data" + data + "\n" + 
-    	        "Quantidade de itens: " + quantidadeItens + "\n\n" +
-    	        "Codigo \tDescricao \tQuantidade"
-    	        );
-    	        for (int i = 0; i < quantidadeItens ; i++){
-    	        	int codigo = produtos.get(i).getCodigo();
-    	        	String descri = produtos.get(i).getDescricao();
-    	        	double qtd = quantidades.get(i);
-    	        	System.out.println(int + "\t" + descri + "\t" + qtd "\)
-    	        }
-            );
-	}*/
+	public int getNumero() {
+		return numero;
+	}
+	
+	public Date getData(){
+		return data;
+	}
+	
+	// outros metodos
+	
+	
 
 }

@@ -1,7 +1,5 @@
 package projetomercado;
 
-import java.util.ArrayList;
-
 public class Produto {
 
 	private int codigo;
@@ -12,8 +10,6 @@ public class Produto {
 	private double estoque;
 	private int status; 
 
-	static ArrayList<Produto> produtos = new ArrayList<Produto>();
-	
 	// variaveis de controle para status
 	public static final int ATIVO = 1;
 	public static final int INATIVO = 0;
@@ -31,21 +27,6 @@ public class Produto {
 		setStatus(status);
 	}
 	
-    public static void insereProduto(int codigo, String descricao, double precoCompra, double precoVenda,
-            String unidade, double estoque, int status){
-		try {
-			// Verifica se o código é repetido no array produtos
-			if(!validaCodigo(codigo))
-				throw new RuntimeException("Codigo ja existente no sistema: " + codigo);
-			
-			Produto p = new Produto(codigo, descricao, precoCompra, precoVenda, unidade, estoque, status);
-			produtos.add(p);
-		} catch (RuntimeException re) {
-			//System.err.println(re);
-			re.printStackTrace(System.out);
-		}
-	}
-
     // Sets
     
 	public void setCodigo(int codigo) throws RuntimeException {
@@ -136,7 +117,6 @@ public class Produto {
 		return status;
 	}
 
-
 	// Metodos
 	
 	public void alteraProduto (int codigo, String descricao, double precoCompra, double precoVenda,
@@ -157,92 +137,16 @@ public class Produto {
 					" nao esta disponivel em estoque (" + estoque + ")");
 
 		this.setEstoque(estoque - qtd);
-		
 	}
 	
 	// Altera o estoque do produto com o codigo	(esse metodo está na especificaçao)
 	public void alteraEstoque(int codigo, double estoque) {
         try{
-            Produto p = consultaProdutoPorCodigo(codigo);
+            Produto p = GerenciadorProdutos.consultaProdutoPorCodigo(codigo);
             p.setEstoque(estoque);
         } catch (RuntimeException re)
         {
             System.err.println(re);
         }
     }
-    
-	// Reduz o estoque do produto com o codigo
-    public static void reduzEstoque(int codigo, double reducao) {
-        try{
-            Produto p = consultaProdutoPorCodigo(codigo);
-            p.reduzEstoque(reducao);
-        } catch (RuntimeException re)
-        {
-            System.err.println(re);
-        }
-    }
-
-    // Esse metodo está na especificaçao
-    public static Produto consultaProdutoPorCodigo(int codigo){
-        for(Produto p : produtos){
-            if(p.codigo == codigo)
-                return p;
-        }
-        return null;
-    }
-    
-    public static ArrayList<Integer> consultaPorDescricao(String descricao){
-    	ArrayList<Integer> codigos = new ArrayList<Integer>();
-    	
-    	for(Produto p: produtos){
-    		if(p.descricao.startsWith(descricao))
-    			codigos.add(p.codigo);	
-    	}
-    	
-    	if (codigos.isEmpty())
-    		codigos.add(-1);
-    	
-    	return codigos;
-    }
-    
-    private static boolean validaCodigo(int codigo){
-        for (Produto p : produtos){
-            if(p.codigo == codigo)
-                return false;
-        }
-        return true;
-    }
-
-    public static void listaProdutos(){
-        for(Produto p : produtos)
-            exibeProduto(p);
-    }
-
-    public static void exibeProduto(Produto p){
-        System.out.println(
-            "----------------------------------------\n" +
-            "Codigo: " + p.codigo + "\n" +
-            "Descricao: " + p.descricao + "\n" +
-            "Preco de compra: " + p.precoCompra + "\n" +
-            "Preco de venda: " + p.precoVenda + "\n" +
-            "Unidade: " + p.unidade + "\n" +
-            "Estoque: " + p.estoque + "\n" +
-            "Status: " + p.status
-        );
-    }
-    
-    public static void exibeProduto(int codigo){
-    	Produto p = consultaProdutoPorCodigo(codigo);
-        System.out.println(
-            "----------------------------------------\n" +
-	        "Codigo: " + p.codigo + "\n" +
-	        "Descricao: " + p.descricao + "\n" +
-	        "Preco de compra: " + p.precoCompra + "\n" +
-	        "Preco de venda: " + p.precoVenda + "\n" +
-	        "Unidade: " + p.unidade + "\n" +
-	        "Estoque: " + p.estoque + "\n" +
-	        "Status: " + p.status
-        );
-    }
-	
 }
