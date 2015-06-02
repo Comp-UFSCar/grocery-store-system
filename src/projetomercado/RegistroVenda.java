@@ -14,20 +14,6 @@ public class RegistroVenda {
 	private ArrayList<Produto> produtos = new ArrayList<Produto>();
 	private Cliente cliente;
 	
-	public String getRegVenda(){
-		String s = String.valueOf(numero);
-		s += ";" + cliente.getCpf();
-		s += ";" + data;
-		s += ";" + String.valueOf(quantidadeItens);
-		
-		for (int i = 0; i < quantidadeItens; i++){
-			s += ";" + getProdutos().get(i).getCodigo();
-			s += ";" + String.valueOf(quantidades.get(i));
-		}
-		
-		return s;
-	}
-	
 	RegistroVenda(String registroVenda){		
 		// Divide a string em 4 partes
 		String partes[] = registroVenda.split(";",4);
