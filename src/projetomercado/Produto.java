@@ -130,23 +130,10 @@ public class Produto {
 		setStatus(status);
 	}
 
-	// Reduz estoque do proprio produto
-	public void reduzEstoque (double qtd) throws RuntimeException {
-		if(qtd > estoque)
-			throw new RuntimeException("A quantidade " + qtd + 
-					" nao esta disponivel em estoque (" + estoque + ")");
-
-		this.setEstoque(estoque - qtd);
-	}
-	
-	// Altera o estoque do produto com o codigo	(esse metodo está na especificaçao)
 	public void alteraEstoque(int codigo, double estoque) {
-        try{
-            Produto p = GerenciadorProdutos.consultaProdutoPorCodigo(codigo);
-            p.setEstoque(estoque);
-        } catch (RuntimeException re)
-        {
-            System.err.println(re);
-        }
+		// Ta estranho isso aqui mas é como tá no diagrama de classes...
+		// talvez seja static?
+        Produto p = GerenciadorProdutos.consultaProdutoPorCodigo(codigo);
+        p.setEstoque(estoque);
     }
 }

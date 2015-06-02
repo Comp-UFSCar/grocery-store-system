@@ -4,10 +4,6 @@ import java.util.ArrayList;
 
 public class Mercado {
 	
-	//private static ArrayList<Produto> produtos = Produto.produtos;
-	//private static ArrayList<Cliente> clientes = Cliente.clientes;
-	//private static ArrayList<RegistroVenda> registrosVenda = RegistroVenda.registros;
-	
 	public static void main(String args[])
 	{
 		
@@ -40,7 +36,7 @@ public class Mercado {
 			
 			GerenciadorRegistrosVenda.insereRegistroVenda(registroVenda);
 		}
-		
+		GerenciadorRegistrosVenda.buscaPorNumero(1);
 		GerenciadorRegistrosVenda.printRegistro(1);
 		System.out.println("*faturamento: "+GerenciadorRegistrosVenda.buscaPorNumero(1).faturamento());
 		

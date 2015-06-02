@@ -50,6 +50,8 @@ public class Cliente {
 	//setters
 	
 	public void setNome(String nome){
+		// TODO: Nome: alfabetico, com tamanho maximo 128 caracteres, composto por
+		// no minimo duas palavras com tamanho minimo de 2 caracteres cada
 		/*
 		if(!telefone.matches("[a-zA-Z\\-'\\s]+"))
 			throw new RuntimeException("Nome invalido " + nome);

@@ -21,13 +21,14 @@ public class GerenciadorProdutos {
 		}
 	}
     
-    public static void reduzEstoque(int cod, double reducao) {
+    public static void alteraEstoque(int cod, double estoque) {
         try{
             Produto p = consultaProdutoPorCodigo(cod);
-            p.reduzEstoque(reducao);
+            p.alteraEstoque(p.getCodigo(), estoque);
         } catch (RuntimeException re)
         {
-            System.err.println(re);
+            //System.err.println(re);
+            re.printStackTrace(System.out);
         }
     }
 
@@ -39,7 +40,6 @@ public class GerenciadorProdutos {
         return null;
     }
     
-    // Esse metodo está na especificaçao
     public static ArrayList<Integer> consultaPorDescricao(String descricao){
     	// TODO: verificar se entrada segue:
     	// alfanumerico, tamanho mınimo 3 caracteres, tamanho

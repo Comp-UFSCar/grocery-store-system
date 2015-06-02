@@ -13,8 +13,6 @@ public class RegistroVenda {
 	private ArrayList<Double> quantidades = new ArrayList<Double>();
 	private ArrayList<Produto> produtos = new ArrayList<Produto>();
 	private Cliente cliente;
-	private String registro;
-	
 	
 	public String getRegVenda(){
 		String s = String.valueOf(numero);
@@ -30,7 +28,6 @@ public class RegistroVenda {
 		return s;
 	}
 	
-	
 	RegistroVenda(String registroVenda){		
 		// Divide a string em 4 partes
 		String partes[] = registroVenda.split(";",4);
@@ -39,89 +36,30 @@ public class RegistroVenda {
 		String regDataVenda = partes[2];
 		String regProdutosQuantidades = partes[3];
 		
-		// Validaçao
-		validaCodigoVenda(regCodigoVenda);
-		validaCpfCliente(regCpfCliente);
-		validaDataVenda(regDataVenda);
-		validaProdutosQuantidades(regProdutosQuantidades);
-		
 		// Sets
 		setCodigoVenda(regCodigoVenda);
 		setDataVenda(regDataVenda);
 		setQuantidadesEProdutos(regProdutosQuantidades);
 		setCliente(regCpfCliente);
-		// String de entrada completa
-		setRegistro(registroVenda);
+
 	}
 
 	/////////////////////////////////////////////////////////////////////
-	///////////////////// Validação /////////////////////////////////////
+	///////////////////// Sets / Gets ///////////////////////////////////
 	/////////////////////////////////////////////////////////////////////
 
-
-	private void validaCodigoVenda(String cod){
-		int codigo = Integer.parseInt(cod);
+	private void setCodigoVenda(String regCodigoVenda) {
+		int codigo = Integer.parseInt(regCodigoVenda);
 		
 		if (codigo <= 0)
 			throw new RuntimeException ("Codigo de registro de venda invalido: negativo ou zero");
-		
-		if (GerenciadorRegistrosVenda.getRegistros().isEmpty())
-			return;
 		
 		for (RegistroVenda r : GerenciadorRegistrosVenda.getRegistros()){
 			if (codigo == r.getCodigo())
 				throw new RuntimeException ("Codigo de registro de venda invalido: repetido");
 		}
 		
-	}
-
-	private void validaCpfCliente(String cpf){
-		Cliente c = GerenciadorClientes.consultaClientePorCpf(cpf);
-		if (c == null)
-			throw new RuntimeException ("CPF nao encontrado");
-	}
-	
-	private void validaDataVenda(String data){
-		try {
-			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-			df.setLenient(false);
-			df.parse(data);
-		} catch (ParseException e){
-			throw new RuntimeException("Data invalida");
-		}
-	}
-	
-	private boolean validaProdutosQuantidades(String regProdutosQuantidades){
-		String[] partes = regProdutosQuantidades.split(";");
-		int quantidadeItens = partes.length/2;
-
-		Produto produto;
-		int cod;
-		Double qtd;
-		
-		// Separa string em codigo e quantidade
-		// procura na lista de produtos e verifica se tem em estoque
-		for (int i = 0 ; i < quantidadeItens; i+=2){
-			cod = Integer.parseInt(partes[i]);
-			qtd = Double.parseDouble(partes[i+1]);
-
-			produto = GerenciadorProdutos.consultaProdutoPorCodigo(cod);
-			if (produto == null){
-				throw new RuntimeException("Produto codigo " + cod + " nao encontrado");
-			}
-			if (produto.getEstoque() < qtd)
-				throw new RuntimeException("Produto codigo " + cod + " nao tem a quantidade pedida: " 
-						+ qtd + ", estoque: " + produto.getEstoque());
-		}
-		return true;
-	}
-	
-	/////////////////////////////////////////////////////////////////////
-	///////////////////// Sets / Gets ///////////////////////////////////
-	/////////////////////////////////////////////////////////////////////
-
-	private void setCodigoVenda(String regCodigoVenda) {
-		numero = Integer.parseInt(regCodigoVenda);
+		this.numero = codigo;
 	}
 
 	private void setDataVenda(String regDataVenda) {	
@@ -130,7 +68,7 @@ public class RegistroVenda {
 		try {
 			data = df.parse(regDataVenda);
 		} catch (ParseException e) {
-			e.printStackTrace();
+			throw new RuntimeException("Data invalida");
 		}
 	}
 
@@ -151,7 +89,14 @@ public class RegistroVenda {
 			qtd = Double.parseDouble(partes[i+1]);
 
 			produto = GerenciadorProdutos.consultaProdutoPorCodigo(cod);
-			produto.reduzEstoque(qtd);
+			if (produto == null){
+				throw new RuntimeException("Produto codigo " + cod + " nao encontrado");
+			}
+			if (produto.getEstoque() < qtd)
+				throw new RuntimeException("Produto codigo " + cod + " nao tem a quantidade pedida: " 
+						+ qtd + ", estoque: " + produto.getEstoque());
+			
+			produto.alteraEstoque(produto.getCodigo(), produto.getEstoque() - qtd);
 			getProdutos().add(produto);
 			quantidades.add(qtd);
 		}
@@ -159,23 +104,17 @@ public class RegistroVenda {
 	}
 	
 	private void setCliente(String regCpfCliente) {
-		cliente = GerenciadorClientes.consultaClientePorCpf(regCpfCliente);
+		Cliente c = GerenciadorClientes.consultaClientePorCpf(regCpfCliente);
+		if (c == null)
+			throw new RuntimeException ("CPF nao encontrado");
+		
+		cliente = c;
 	}
 	
 	
 	public int getCodigo(){
 		return numero;
 	}
-
-	
-	public String getRegistro(){
-		return registro;
-	}
-	
-	private void setRegistro(String registroVenda) {
-		registro = registroVenda;
-	}
-
 
 	public ArrayList<Produto> getProdutos() {
 		return produtos;
