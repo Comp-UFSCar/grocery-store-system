@@ -6,7 +6,7 @@ public class Cliente {
 	private String endereco;
 	private String telefone;
 	private String email;
-	private int status;
+	private int status; 
 	
 	public static final int ATIVO = 1;
 	public static final int INATIVO = 0;
@@ -20,6 +20,7 @@ public class Cliente {
 		setEmail(email);
 		setStatus(status);
 	}
+	
 	
 	//getters
 	public String getNome(){
@@ -47,11 +48,14 @@ public class Cliente {
 	}
 	
 	//setters
+	
 	public void setNome(String nome){
-		/*
-		if(!telefone.matches("[a-zA-Z\\-'\\s]+"))
+		if(nome.length() > 128)
 			throw new RuntimeException("Nome invalido " + nome);
-		*/
+
+		if(!nome.matches("(([a-zA-Z]){2,} ?){2,}"))
+			throw new RuntimeException("Nome invalido " + nome);
+
 		this.nome = nome;
 	}
 	
@@ -97,6 +101,8 @@ public class Cliente {
 	}
 	
 	public void setEndereco(String endereco){
+		if(!endereco.matches("([a-zA-Z0-9]| ){1,256}"))
+			throw new RuntimeException("Endereco invalido " + endereco);
 
 		this.endereco = endereco;
 	}
@@ -130,7 +136,7 @@ public class Cliente {
 		setEmail(email);
 		setStatus(status);
 	}
-	
+
 	
 	
 }

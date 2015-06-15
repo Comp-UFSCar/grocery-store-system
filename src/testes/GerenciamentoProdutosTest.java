@@ -37,4 +37,9 @@ public class GerenciamentoProdutosTest {
     public void testExibeProduto() throws Exception {
 
     }
+    
+    @Test
+    public void testConsultaPorDescricao() throws Exception{
+    	
+    }
 }

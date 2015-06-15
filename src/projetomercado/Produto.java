@@ -8,7 +8,7 @@ public class Produto {
 	private double precoVenda;
 	private String unidade;
 	private double estoque;
-	private int status;
+	private int status; 
 
 	// variaveis de controle para status
 	public static final int ATIVO = 1;
@@ -26,21 +26,15 @@ public class Produto {
 		setEstoque(estoque);
 		setStatus(status);
 	}
-
-	public int getCodigo() {
-		return codigo;
-	}
-
+	
+    // Sets
+    
 	public void setCodigo(int codigo) throws RuntimeException {
 		// codigo eh inteiro e > 0
 		if(codigo <= 0)
 			throw new RuntimeException("Codigo invalido " + codigo);
 
 		this.codigo = codigo;
-	}
-
-	public String getDescricao() {
-		return descricao;
 	}
 
 	public void setDescricao(String descricao) throws RuntimeException {
@@ -51,20 +45,12 @@ public class Produto {
 		this.descricao = descricao;
 	}
 
-	public double getPrecoCompra() {
-		return precoCompra;
-	}
-
 	public void setPrecoCompra(double precoCompra) {
 		// preco de compra > 0
 		if(precoCompra <= 0)
 			throw new RuntimeException("Preco de compra invalido: " + precoCompra);
 
 		this.precoCompra = precoCompra;
-	}
-
-	public double getPrecoVenda() {
-		return precoVenda;
 	}
 
 	public void setPrecoVenda(double precoVenda) {
@@ -75,19 +61,11 @@ public class Produto {
 		this.precoVenda = precoVenda;
 	}
 
-	public String getUnidade() {
-		return unidade;
-	}
-
 	public void setUnidade(String unidade) {
 		if(!(unidade.matches("[a-zA-Z]{2}")))
 			throw new RuntimeException("Unidade invalida: " + unidade);
 
 		this.unidade = unidade;
-	}
-
-	public double getEstoque() {
-		return estoque;
 	}
 
 	public void setEstoque(double estoque) {
@@ -96,10 +74,6 @@ public class Produto {
 			throw new RuntimeException("Estoque invalido: " + estoque);
 
 		this.estoque = estoque;
-	}
-
-	public int getStatus() {
-		return status;
 	}
 
 	public void setStatus(int status) {
@@ -112,7 +86,39 @@ public class Produto {
 
 		this.status = status;
 	}
+	
+	// Gets
+	
+	public int getCodigo(){
+		return codigo;
+	}
+	
+	public String getDescricao() {
+		return descricao;
+	}
 
+	public double getPrecoCompra() {
+		return precoCompra;
+	}
+
+	public double getPrecoVenda() {
+		return precoVenda;
+	}
+
+	public String getUnidade() {
+		return unidade;
+	}
+
+	public double getEstoque(){
+		return estoque;
+	}
+	
+	public int getStatus() {
+		return status;
+	}
+
+	// Metodos
+	
 	public void alteraProduto (int codigo, String descricao, double precoCompra, double precoVenda,
 							   String unidade, double estoque, int status){
 		setCodigo(codigo);
@@ -123,4 +129,11 @@ public class Produto {
 		setEstoque(estoque);
 		setStatus(status);
 	}
+
+	public void alteraEstoque(int codigo, double estoque) {
+		// Ta estranho isso aqui mas é como tá no diagrama de classes...
+		// talvez seja static?
+        Produto p = GerenciadorProdutos.consultaProdutoPorCodigo(codigo);
+        p.setEstoque(estoque);
+    }
 }
