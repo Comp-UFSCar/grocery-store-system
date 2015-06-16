@@ -47,7 +47,9 @@
                     <children>
                       <component id="fe498" class="javax.swing.JTable" binding="tblProdutos" custom-create="true">
                         <constraints/>
-                        <properties/>
+                        <properties>
+                          <autoResizeMode value="4"/>
+                        </properties>
                       </component>
                     </children>
                   </scrollpane>

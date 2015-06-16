@@ -8,6 +8,7 @@ import ui.produto.dialogConsultarProduto;
 import ui.produto.dialogInserirProduto;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -117,29 +118,19 @@ public class MainUI extends JDialog {
         }
     }
 
-    private void onCancel() {
-// add your code here if necessary
-        dispose();
+    private void onCancel() { dispose();
     }
 
     private void createUIComponents() {
-        modelProdutos = new DefaultTableModel() {
-            String[] produto = {"Codigo", "Descricao", "Preco Compra", "Preco Venda", "Unidade", "Estoque", "Status"};
-
+        setModelProdutos();
+        populateProdutos();
+        tblProdutos = new JTable(modelProdutos) {
             @Override
-            public int getColumnCount() {
-                return produto.length;
-            }
-
-            @Override
-            public String getColumnName(int index) {
-                return produto[index];
+            public boolean isCellEditable(int row, int column){
+                return false;
             }
         };
-
-        populateProdutos();
-        tblProdutos = new JTable(modelProdutos);
-
+        setTblProdutosPreferences();
     }
 
     private void populateProdutos() {
@@ -164,7 +155,7 @@ public class MainUI extends JDialog {
         String status = defineStatus(p.getStatus());
         modelProdutos.addRow(new Object[]{
                 p.getCodigo(), p.getDescricao(), String.format("%.2f", p.getPrecoCompra()),
-                String.format("%.2f", p.getPrecoVenda()), p.getUnidade(), p.getEstoque(), status
+                String.format("%.2f", p.getPrecoVenda()), p.getEstoque(), p.getUnidade(), status
         });
     }
 
@@ -186,5 +177,36 @@ public class MainUI extends JDialog {
         for(Produto p: ps){
             insertProduto(p);
         }
+    }
+
+    private void setModelProdutos(){
+        modelProdutos = new DefaultTableModel() {
+            String[] produto = {"Codigo", "Descricao", "Preco Compra", "Preco Venda", "Estoque", "Unidade", "Status"};
+
+            @Override
+            public int getColumnCount() {
+                return produto.length;
+            }
+
+            @Override
+            public String getColumnName(int index) {
+                return produto[index];
+            }
+        };
+    }
+    private void setTblProdutosPreferences(){
+        DefaultTableCellRenderer centered = new DefaultTableCellRenderer();
+        centered.setHorizontalAlignment(JLabel.CENTER);
+
+        ((DefaultTableCellRenderer)tblProdutos.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
+        tblProdutos.getColumnModel().getColumn(0).setCellRenderer(centered);
+        tblProdutos.getColumnModel().getColumn(5).setCellRenderer(centered);
+        tblProdutos.getColumnModel().getColumn(6).setCellRenderer(centered);
+
+        tblProdutos.getColumnModel().getColumn(0).setPreferredWidth(50);
+        tblProdutos.getColumnModel().getColumn(1).setPreferredWidth(250);
+        tblProdutos.getColumnModel().getColumn(5).setPreferredWidth(40);
+        tblProdutos.getColumnModel().getColumn(6).setPreferredWidth(40);
+
     }
 }

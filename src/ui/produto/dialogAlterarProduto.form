@@ -175,8 +175,8 @@
             </constraints>
             <properties>
               <model>
-                <item value="Inválido"/>
-                <item value="Válido"/>
+                <item value="Inativo"/>
+                <item value="Ativo"/>
               </model>
             </properties>
           </component>
