@@ -1,72 +1,46 @@
 package projetomercado;
 
+import ui.MainUI;
+
+import javax.swing.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class Mercado {
-	
-	public static void main(String args[])
-	{
-		
-		// insereProduto(codigo, descricao, precoCompra, precoVenda, unidade, estoque, status)
-		GerenciadorProdutos.insereProduto(11111, "este eh o produto 1", 1.00, 5.99, "cm", 10.5, Produto.ATIVO);
-		GerenciadorProdutos.insereProduto(22222, "e este eh o produto 2", 2.00, 7.99, "kg", 10.5, 1);
-		GerenciadorProdutos.insereProduto(33333, "por fim o produto 3", 3.00, 10.99, "mm", 10.5, 1);
-		
-		// insereCliente(nome, cpf,String endereco, telefone, email, status)
-		GerenciadorClientes.insereCliente("Jose Silva", "52882174160", "Rua Episcopal 111", "(16)988886666", "email@email.com", Cliente.ATIVO);
-		
-		GerenciadorProdutos.listaProdutos();
-		
-		{
-			String numeroRegVenda = "1";
-			String clienteCpf = "52882174160";
-			String dataVenda = "01/11/2015";
-			String codProduto1 = "11111";		// Testar com 11111 e 11112 (nao existe)
-			String qtdProduto1 = "1.0"; 		// Testar com 1.0 e 100.0 (nao tem no estoque)
-			String codProduto2 = "22222";
-			String qtdProduto2 = "0.1f";
-			
-			String registroVenda = numeroRegVenda + ";" + 
-					clienteCpf + ";" + 
-					dataVenda + ";" +
-					codProduto1 + ";" + 
-					qtdProduto1 + ";" + 
-					codProduto2 + ";" +
-					qtdProduto2;
-			
-			GerenciadorRegistrosVenda.insereRegistroVenda(registroVenda);
-		}
-		GerenciadorRegistrosVenda.buscaPorNumero(1);
-		GerenciadorRegistrosVenda.printRegistro(1);
-		System.out.println("*faturamento: "+GerenciadorRegistrosVenda.buscaPorNumero(1).faturamento());
-		
-		GerenciadorProdutos.listaProdutos();
-		
-		{ 
-			String numeroRegVenda = "2";
-			String clienteCpf = "52882174160";
-			String dataVenda = "01/06/2015";
-			String codProduto1 = "11111";		// Testar com 11111 e 11112 (nao existe)
-			String qtdProduto1 = "5.0"; 		// Testar com 1.0 e 100.0 (nao tem no estoque)
-			String codProduto2 = "33333";
-			String qtdProduto2 = "0.3f";
-			
-			String registroVenda = numeroRegVenda + ";" + 
-					clienteCpf + ";" + 
-					dataVenda + ";" +
-					codProduto1 + ";" + 
-					qtdProduto1 + ";" + 
-					codProduto2 + ";" +
-					qtdProduto2;
-			
-			GerenciadorRegistrosVenda.insereRegistroVenda(registroVenda);
-		}
-		
-		GerenciadorRegistrosVenda.printRegistro(2);
-		System.out.println("*faturamento: " + GerenciadorRegistrosVenda.buscaPorNumero(2).faturamento());
-		GerenciadorProdutos.listaProdutos();
 
-		System.out.println("\n\nFaturamento de junho: " + calculaFaturamento(6));
+public class Mercado  {
+
+	static MainUI dialog;
+
+	public static void main(String[] args) {
+
+		try {
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		}
+		catch (UnsupportedLookAndFeelException e) {
+			// handle exception
+		}
+		catch (ClassNotFoundException e) {
+			// handle exception
+		}
+		catch (InstantiationException e) {
+			// handle exception
+		}
+		catch (IllegalAccessException e) {
+			// handle exception
+		}
+
+		// Base de Dados Pre-definida
+		GerenciadorProdutos.insereProduto(00001, "Produto Um", 1.50f, 2.50f, "kg", 10f, Produto.ATIVO);
+		GerenciadorProdutos.insereProduto(00002, "Produto Dois", 10.00f, 11.15f, "mm", 10f, Produto.ATIVO);
+		GerenciadorProdutos.insereProduto(00003, "Um produto qualquer", 9.25f, 16.30f, "ml", 0, Produto.INATIVO);
+		GerenciadorProdutos.insereProduto(00004, "Outro produto", 0.50f, 1.00f, "kg", 10f, Produto.ATIVO);
+		GerenciadorProdutos.insereProduto(00005, "Mais um produto", 120.13f, 141.90f, "kg", 10f, Produto.ATIVO);
+
+		dialog = new MainUI();
+		dialog.pack();
+		dialog.setLocationRelativeTo(null);
+		dialog.setVisible(true);
+		System.exit(0);
 	}
 
 	private static double calculaFaturamento(int mes){
@@ -91,4 +65,18 @@ public class Mercado {
 		return GerenciadorProdutos.consultaPorDescricao(descricao);
 	}
 
+	public static void updateTableProduto(){
+		dialog.relistProdutos();
+	}
+
+	public static void searchTableProduto(Produto p){
+		dialog.searchProduto(p);
+	}
+
+	public static void searchTableProduto(ArrayList<Integer> codigos){
+		ArrayList<Produto> ps = new ArrayList<Produto>();
+		for(int c : codigos )
+			ps.add(GerenciadorProdutos.consultaProdutoPorCodigo(c));
+		dialog.searchProduto(ps);
+	}
 }

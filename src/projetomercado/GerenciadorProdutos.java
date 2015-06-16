@@ -85,4 +85,8 @@ public class GerenciadorProdutos {
     	Produto p = consultaProdutoPorCodigo(codigo);
         exibeProduto(p);
     }
+
+    public static ArrayList<Produto> getProdutos(){
+        return produtos;
+    }
 }
