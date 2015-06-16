@@ -37,5 +37,9 @@ public class GerenciadorClientes {
     	}
     	return null;    	
     }
+
+	public static ArrayList<Cliente> getClientes(){
+		return clientes;
+	}
 	
 }
