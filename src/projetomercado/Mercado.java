@@ -3,7 +3,6 @@ package projetomercado;
 import ui.MainUI;
 
 import javax.swing.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 
@@ -36,6 +35,18 @@ public class Mercado  {
 		GerenciadorProdutos.insereProduto(00004, "Outro produto", 0.50f, 1.00f, "kg", 10f, Produto.ATIVO);
 		GerenciadorProdutos.insereProduto(00005, "Mais um produto", 120.13f, 141.90f, "kg", 10f, Produto.ATIVO);
 
+		GerenciadorClientes.insereCliente(
+				"Machado de Assis", "41567832270","Rua das Araucarias", "(19)134568795",  "machadoassis@brasil.com.br", Cliente.ATIVO);
+		GerenciadorClientes.insereCliente(
+				"Fernando Pessoa", "08853489820","Av Sao Carlos", "(16)526789112",  "fpessoa@ufscar.com", Cliente.ATIVO);
+		GerenciadorClientes.insereCliente(
+				"Henri Montherlant", "35412119387","Rua Carvalho", "(11)465238976",  "montherlant@cthulhu.com", Cliente.INATIVO);
+		GerenciadorClientes.insereCliente(
+				"Cesare Pavese", "16142848064","Av Sao Carlos", "(21)446223597",  "cesarpavese@brasil.com.br", Cliente.ATIVO);
+		GerenciadorClientes.insereCliente(
+				"John Milton", "70553523120","Rua Episcopal", "(14)465332335",  "miltonjohn@brasil.com.br", Cliente.ATIVO);
+
+
 		dialog = new MainUI();
 		dialog.pack();
 		dialog.setLocationRelativeTo(null);
@@ -65,8 +76,11 @@ public class Mercado  {
 		return GerenciadorProdutos.consultaPorDescricao(descricao);
 	}
 
+	public static void refreshTable(ArrayList<?> list){
+		dialog.refreshTable(list);
+	}
 	public static void updateTableProduto(){
-		dialog.relistProdutos();
+		dialog.refreshTable(GerenciadorProdutos.getProdutos());
 	}
 
 	public static void searchTableProduto(Produto p){
