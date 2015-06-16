@@ -20,8 +20,16 @@ public class Cliente {
 		setEmail(email);
 		setStatus(status);
 	}
-	
-	
+
+	public Cliente(){
+		this.nome = "";
+		this.cpf = "";
+		this.endereco = "";
+		this.telefone = "";
+		this.email = "";
+		this.status = Cliente.INATIVO;
+	}
+
 	//getters
 	public String getNome(){
 		return this.nome;
@@ -53,7 +61,7 @@ public class Cliente {
 		if(nome.length() > 128)
 			throw new RuntimeException("Nome invalido " + nome);
 
-		if(!nome.matches("(([a-zA-Z]){2,} ?){2,}"))
+		if(!nome.matches("(([a-zA-Z]){2,} )(([a-zA-Z]){2,} ?)+"))
 			throw new RuntimeException("Nome invalido " + nome);
 
 		this.nome = nome;
