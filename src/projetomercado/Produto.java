@@ -27,9 +27,8 @@ public class Produto {
 		setStatus(status);
 	}
 	
-    // Sets
-    
-	public void setCodigo(int codigo) throws RuntimeException {
+    // Setters
+	public void setCodigo(int codigo) {
 		// codigo eh inteiro e > 0
 		if(codigo <= 0)
 			throw new RuntimeException("Codigo invalido " + codigo);
@@ -37,7 +36,7 @@ public class Produto {
 		this.codigo = codigo;
 	}
 
-	public void setDescricao(String descricao) throws RuntimeException {
+	public void setDescricao(String descricao) {
 		// apenas alfanumericos entre 3 e 64 caracteres
 		if(!(descricao.matches("[\\w|\\s]{3,64}")))
 			throw new RuntimeException("Descricao invalida: " + descricao);
@@ -62,6 +61,7 @@ public class Produto {
 	}
 
 	public void setUnidade(String unidade) {
+		// a-zA-z, 2 caracteres
 		if(!(unidade.matches("[a-zA-Z]{2}")))
 			throw new RuntimeException("Unidade invalida: " + unidade);
 
@@ -87,8 +87,7 @@ public class Produto {
 		this.status = status;
 	}
 	
-	// Gets
-	
+	// Getters
 	public int getCodigo(){
 		return codigo;
 	}
@@ -118,7 +117,6 @@ public class Produto {
 	}
 
 	// Metodos
-	
 	public void alteraProduto (int codigo, String descricao, double precoCompra, double precoVenda,
 							   String unidade, double estoque, int status){
 		setCodigo(codigo);
@@ -130,10 +128,4 @@ public class Produto {
 		setStatus(status);
 	}
 
-	public void alteraEstoque(int codigo, double estoque) {
-		// Ta estranho isso aqui mas é como tá no diagrama de classes...
-		// talvez seja static?
-        Produto p = GerenciadorProdutos.consultaProdutoPorCodigo(codigo);
-        p.setEstoque(estoque);
-    }
 }
