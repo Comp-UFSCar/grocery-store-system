@@ -7,32 +7,28 @@ public class GerenciadorProdutos {
 	static ArrayList<Produto> produtos = new ArrayList<Produto>();
 
     public static void insereProduto(int codigo, String descricao, double precoCompra, double precoVenda,
-            String unidade, double estoque, int status){
-		try {
-			// Verifica se o código é repetido no array produtos
-			if(!validaCodigo(codigo))
-				throw new RuntimeException("Codigo ja existente no sistema: " + codigo);
-			
-			Produto p = new Produto(codigo, descricao, precoCompra, precoVenda, unidade, estoque, status);
-			produtos.add(p);
-		} catch (RuntimeException re) {
-			//System.err.println(re);
-			re.printStackTrace(System.out);
-		}
+            String unidade, double estoque, int status)
+    {
+        // Verifica se o código é repetido no array produtos
+        if(!validaCodigo(codigo))
+            throw new RuntimeException("Codigo ja existente no sistema: " + codigo);
+
+        Produto p = new Produto(codigo, descricao, precoCompra, precoVenda, unidade, estoque, status);
+        produtos.add(p);
 	}
     
     public static void alteraEstoque(int cod, double estoque) {
-        try{
-            Produto p = consultaProdutoPorCodigo(cod);
-            p.alteraEstoque(p.getCodigo(), estoque);
-        } catch (RuntimeException re)
-        {
-            //System.err.println(re);
-            re.printStackTrace(System.out);
-        }
+        Produto p = consultaProdutoPorCodigo(cod);
+        if (p != null)
+            p.setEstoque(estoque);
+        else
+            throw new RuntimeException("Codigo nao existente no sistema: " + cod);
     }
 
     public static Produto consultaProdutoPorCodigo(int codigo){
+        if(codigo <= 0)
+            throw new RuntimeException("Consulta por codigo invalido " + codigo);
+
         for(Produto p : produtos){
             if(p.getCodigo() == codigo)
                 return p;
@@ -41,11 +37,10 @@ public class GerenciadorProdutos {
     }
     
     public static ArrayList<Integer> consultaPorDescricao(String descricao){
-    	// TODO: verificar se entrada segue:
-    	// alfanumerico, tamanho mınimo 3 caracteres, tamanho
-    	//  maximo 64 caracteres
-    	
-    	ArrayList<Integer> codigos = new ArrayList<Integer>();
+        if(!(descricao.matches("[\\w|\\s]{3,64}")))
+            throw new RuntimeException("Consulta por descricao invalida: " + descricao);
+
+        ArrayList<Integer> codigos = new ArrayList<Integer>();
     	
     	for(Produto p: produtos){
     		if(p.getDescricao().startsWith(descricao))
@@ -88,17 +83,6 @@ public class GerenciadorProdutos {
     
     public static void exibeProduto(int codigo){
     	Produto p = consultaProdutoPorCodigo(codigo);
-        System.out.println(
-        	"----------------------------------------\n" +
-			"Produto\n" +
-			"----------------------------------------\n" +
-            "Codigo: " + p.getCodigo() + "\n" +
-            "Descricao: " + p.getDescricao() + "\n" +
-            "Preco de compra: " + p.getPrecoCompra() + "\n" +
-            "Preco de venda: " + p.getPrecoVenda() + "\n" +
-            "Unidade: " + p.getUnidade() + "\n" +
-            "Estoque: " + p.getEstoque() + "\n" +
-            "Status: " + p.getStatus()
-        );
+        exibeProduto(p);
     }
 }

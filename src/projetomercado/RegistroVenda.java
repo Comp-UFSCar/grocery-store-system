@@ -82,7 +82,7 @@ public class RegistroVenda {
 				throw new RuntimeException("Produto codigo " + cod + " nao tem a quantidade pedida: " 
 						+ qtd + ", estoque: " + produto.getEstoque());
 			
-			produto.alteraEstoque(produto.getCodigo(), produto.getEstoque() - qtd);
+			GerenciadorProdutos.alteraEstoque(produto.getCodigo(), produto.getEstoque() - qtd);
 			getProdutos().add(produto);
 			quantidades.add(qtd);
 		}
