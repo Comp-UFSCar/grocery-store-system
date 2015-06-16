@@ -7,18 +7,11 @@ public class GerenciadorClientes {
 	
 	public static void insereCliente(String nome, String cpf, String endereco,
             String telefone, String email, int status){
-
-		try{
-			if (!validaCpfUnico(cpf)){
+		if (!validaCpfUnico(cpf))
 			throw new RuntimeException("CPF invalido: " + cpf + " já está registrado em outro cliente");
-			}
-			
-			Cliente c = new Cliente(nome, cpf, endereco, telefone, email, status);
-			clientes.add(c);
-		} catch (RuntimeException re){
-			//System.err.println(re);
-			re.printStackTrace(System.out);
-		}
+
+		Cliente c = new Cliente(nome, cpf, endereco, telefone, email, status);
+		clientes.add(c);
 	}
 	
     private static boolean validaCpfUnico(String cpf){
