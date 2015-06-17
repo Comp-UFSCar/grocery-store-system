@@ -72,9 +72,9 @@ public class RegistroVenda {
 		
 		// Separa string em codigo e quantidade
 		// reduz estoque e adiciona nos arrays
-		
+
 		// Obs: se já chegou aqui é pq passou na validação (produto encontrado e qtd>estoque)
-		for (int i = 0 ; i <= quantidadeItens; i+=2){
+		for (int i = 0 ; i < (quantidadeItens*2); i+=2){
 			cod = Integer.parseInt(partes[i].trim());
 			qtd = Double.parseDouble(partes[i+1].trim());
 
@@ -87,10 +87,9 @@ public class RegistroVenda {
 						+ qtd + ", estoque: " + produto.getEstoque());
 			
 			GerenciadorProdutos.alteraEstoque(produto.getCodigo(), produto.getEstoque() - qtd);
-			getProdutos().add(produto);
+			produtos.add(produto);
 			quantidades.add(qtd);
 		}
-		
 	}
 	
 	public void setCliente(String regCpfCliente) {
@@ -98,7 +97,7 @@ public class RegistroVenda {
 		if (c == null)
 			throw new RuntimeException ("CPF nao encontrado");
 		
-		cliente = c;
+		this.cliente = c;
 	}
 
 	public ArrayList<Produto> getProdutos() {
@@ -120,7 +119,10 @@ public class RegistroVenda {
 	public Date getData(){
 		return data;
 	}
-	
+
+	public Cliente getCliente(){
+		return this.cliente;
+	}
 	// outros metodos
 	
 	public double faturamento(){

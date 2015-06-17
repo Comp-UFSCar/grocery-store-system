@@ -11,15 +11,8 @@ public class GerenciadorRegistrosVenda {
 	private static ArrayList<RegistroVenda> registros = new ArrayList<RegistroVenda>();
 	
 	public static void insereRegistroVenda (String str){
-		try {
-			RegistroVenda regVenda = new RegistroVenda(str);		
+			RegistroVenda regVenda = new RegistroVenda(str);
 			registros.add(regVenda);
-		}
-		catch (RuntimeException re)
-        {
-    		//System.err.println(re);
-            re.printStackTrace(System.out);
-        }		
 	}
 	
 	public static RegistroVenda buscaPorNumero(int numero){
@@ -84,5 +77,6 @@ public class GerenciadorRegistrosVenda {
 			return null;
 		return regs;
 	}
-	
+
+
 }
