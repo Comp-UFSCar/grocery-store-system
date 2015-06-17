@@ -11,23 +11,25 @@ public class GerenciadorRegistrosVenda {
 	private static ArrayList<RegistroVenda> registros = new ArrayList<RegistroVenda>();
 	
 	public static void insereRegistroVenda (String str){
-		try {
+		RegistroVenda rv = new RegistroVenda();
+		String partes[] = str.split(";", 2);
+		//validar numero
+		rv.setNumeroVenda(partes[0]);
+		int numero = rv.getNumero();
+
+		if(!validaNumero(numero)){
+				throw new RuntimeException ("Numero de registro de venda invalido: repetido");
+		}
 			RegistroVenda regVenda = new RegistroVenda(str);		
 			registros.add(regVenda);
-		}
-		catch (RuntimeException re)
-        {
-    		//System.err.println(re);
-            re.printStackTrace(System.out);
-        }		
 	}
 	
-	public static RegistroVenda buscaPorNumero(int numero){
+	public static boolean validaNumero(int numero){
 		for (RegistroVenda r : registros){
 			if (r.getNumero() == numero)
-				return r;
+				return false;
 		}
-		throw new RuntimeException("Registro nao encontrado");
+		return true;
 	}
 	/*
         
@@ -56,6 +58,13 @@ public class GerenciadorRegistrosVenda {
             
 	}
         */
+	public static RegistroVenda buscaPorNumero(int numero){
+		for (RegistroVenda r : registros){
+			if (r.getNumero() == numero)
+				return r;
+		}
+		throw new RuntimeException("Registro nao encontrado");
+	}
 	public static ArrayList<RegistroVenda> getRegistros() {
 		return registros;
 	}

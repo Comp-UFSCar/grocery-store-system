@@ -36,7 +36,6 @@ public class RegistroVendaTest {
         GerenciadorProdutos.insereProduto
                 (03, "produto tres", 0.50f, 1.0f, "mm", 0f, Produto.INATIVO);
         GerenciadorClientes.insereCliente("Fabiane Ferrari", "12647527504", "endereco", "(14)123456789", "a@a.com", Cliente.ATIVO);
-        GerenciadorRegistrosVenda.insereRegistroVenda(numero + ";" + _cpf + ";" + data + ";" + produtosEQuantidades);
         rv1 = new RegistroVenda();
         rv2 = new RegistroVenda("2;" + _cpf + ";" + data + ";" + produtosEQuantidades);
     }
@@ -74,7 +73,7 @@ public class RegistroVendaTest {
     // correct input
     @Test
     public void testSetNumeroVendaCorrectInput() throws Exception {
-        rv1.setNumeroVenda("3");
+        rv1.setNumeroVenda("1");
     }
     // incorrect inputs
     @Test(expected = RuntimeException.class)
@@ -84,11 +83,6 @@ public class RegistroVendaTest {
     @Test(expected = RuntimeException.class)
     public void testSetNumeroVenda0() throws Exception {
         rv1.setNumeroVenda("0");
-    }
-
-    @Test(expected = RuntimeException.class)
-    public void testSetNumeroRepeatedNumber() throws Exception {
-        rv1.setNumeroVenda("1");
     }
     @Test(expected = RuntimeException.class)
     public void testSetNumeroNaN() throws Exception {

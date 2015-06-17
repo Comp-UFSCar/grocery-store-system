@@ -5,7 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
+import projetomercado.GerenciadorRegistrosVenda;
 public class RegistroVenda {
 	private int numero;
 	private Date data;
@@ -32,6 +32,7 @@ public class RegistroVenda {
 		setQuantidadesEProdutos(regProdutosQuantidades);
 		setCliente(regCpfCliente);
 
+        //GerenciadorRegistrosVenda.insereRegistroVenda(registroVenda);
 	}
 
 	/////////////////////////////////////////////////////////////////////
@@ -43,11 +44,6 @@ public class RegistroVenda {
 		
 		if (codigo <= 0)
 			throw new RuntimeException ("Numero de registro de venda invalido: negativo ou zero");
-		
-		for (RegistroVenda r : GerenciadorRegistrosVenda.getRegistros()){
-			if (codigo == r.getNumero())
-				throw new RuntimeException ("Numero de registro de venda invalido: repetido");
-		}
 		
 		this.numero = codigo;
 	}
