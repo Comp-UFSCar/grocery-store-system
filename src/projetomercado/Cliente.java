@@ -109,7 +109,10 @@ public class Cliente {
 	}
 	
 	public void setEndereco(String endereco){
-		if(!endereco.matches("([a-zA-Z0-9]| ){1,256}"))
+		if(endereco.length() > 256)
+			throw new RuntimeException("Endereco invalido " + endereco);
+
+		if(!endereco.matches("[a-zA-Z0-9]([a-zA-Z0-9]| )*"))
 			throw new RuntimeException("Endereco invalido " + endereco);
 
 		this.endereco = endereco;

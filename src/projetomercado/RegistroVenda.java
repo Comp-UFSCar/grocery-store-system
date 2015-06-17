@@ -13,17 +13,21 @@ public class RegistroVenda {
 	private ArrayList<Double> quantidades = new ArrayList<Double>();
 	private ArrayList<Produto> produtos = new ArrayList<Produto>();
 	private Cliente cliente;
-	
-	RegistroVenda(String registroVenda){		
+
+	public RegistroVenda(){
+
+    }
+
+	public RegistroVenda(String registroVenda){
 		// Divide a string em 4 partes
 		String partes[] = registroVenda.split(";",4);
-		String regCodigoVenda = partes[0];
-		String regCpfCliente = partes[1];
-		String regDataVenda = partes[2];
-		String regProdutosQuantidades = partes[3];
+		String regCodigoVenda = partes[0].trim();
+		String regCpfCliente = partes[1].trim();
+		String regDataVenda = partes[2].trim();
+		String regProdutosQuantidades = partes[3].trim();
 		
 		// Sets
-		setCodigoVenda(regCodigoVenda);
+        setNumeroVenda(regCodigoVenda);
 		setDataVenda(regDataVenda);
 		setQuantidadesEProdutos(regProdutosQuantidades);
 		setCliente(regCpfCliente);
@@ -34,21 +38,21 @@ public class RegistroVenda {
 	///////////////////// Sets / Gets ///////////////////////////////////
 	/////////////////////////////////////////////////////////////////////
 
-	private void setCodigoVenda(String regCodigoVenda) {
+	public void setNumeroVenda(String regCodigoVenda) {
 		int codigo = Integer.parseInt(regCodigoVenda);
 		
 		if (codigo <= 0)
-			throw new RuntimeException ("Codigo de registro de venda invalido: negativo ou zero");
+			throw new RuntimeException ("Numero de registro de venda invalido: negativo ou zero");
 		
 		for (RegistroVenda r : GerenciadorRegistrosVenda.getRegistros()){
-			if (codigo == r.getCodigo())
-				throw new RuntimeException ("Codigo de registro de venda invalido: repetido");
+			if (codigo == r.getNumero())
+				throw new RuntimeException ("Numero de registro de venda invalido: repetido");
 		}
 		
 		this.numero = codigo;
 	}
 
-	private void setDataVenda(String regDataVenda) {	
+	public void setDataVenda(String regDataVenda) {
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		df.setLenient(false);
 		try {
@@ -58,7 +62,7 @@ public class RegistroVenda {
 		}
 	}
 
-	private void setQuantidadesEProdutos(String regProdutosQuantidades) {
+	public void setQuantidadesEProdutos(String regProdutosQuantidades) {
 		String[] partes = regProdutosQuantidades.split(";");
 		quantidadeItens = partes.length/2;
 
@@ -71,8 +75,8 @@ public class RegistroVenda {
 		
 		// Obs: se já chegou aqui é pq passou na validação (produto encontrado e qtd>estoque)
 		for (int i = 0 ; i <= quantidadeItens; i+=2){
-			cod = Integer.parseInt(partes[i]);
-			qtd = Double.parseDouble(partes[i+1]);
+			cod = Integer.parseInt(partes[i].trim());
+			qtd = Double.parseDouble(partes[i+1].trim());
 
 			produto = GerenciadorProdutos.consultaProdutoPorCodigo(cod);
 			if (produto == null){
@@ -89,17 +93,12 @@ public class RegistroVenda {
 		
 	}
 	
-	private void setCliente(String regCpfCliente) {
+	public void setCliente(String regCpfCliente) {
 		Cliente c = GerenciadorClientes.consultaClientePorCpf(regCpfCliente);
 		if (c == null)
 			throw new RuntimeException ("CPF nao encontrado");
 		
 		cliente = c;
-	}
-	
-	
-	public int getCodigo(){
-		return numero;
 	}
 
 	public ArrayList<Produto> getProdutos() {

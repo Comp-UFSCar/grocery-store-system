@@ -28,11 +28,35 @@ public class GerenciadorClientes {
     			return c;
     		}
     	}
-    	return null;    	
+    	return null;
     }
 
 	public static ArrayList<Cliente> getClientes(){
 		return clientes;
+	}
+
+	public static void listaClientes(){
+		for(Cliente c : clientes)
+			exibeCliente(c);
+	}
+
+	public static void exibeCliente(Cliente c){
+		System.out.println(
+				"----------------------------------------\n" +
+						"Cliente\n" +
+						"----------------------------------------\n" +
+						"Nome: " + c.getNome() + "\n" +
+						"CPF: " + c.getCpf() + "\n" +
+						"Endereco: " + c.getEndereco() + "\n" +
+						"Telefone: " + c.getTelefone() + "\n" +
+						"E-mail: " + c.getEmail() + "\n" +
+						"Status: " + c.getStatus()
+		);
+	}
+
+	public static void exibeCliente(String cpf){
+		Cliente c = consultaClientePorCpf(cpf);
+		exibeCliente(c);
 	}
 	
 }
