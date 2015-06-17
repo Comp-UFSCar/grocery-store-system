@@ -34,7 +34,9 @@ public class GerenciadorClientes {
 	public static ArrayList<Cliente> getClientes(){
 		return clientes;
 	}
-
+        /*
+           Essas funções abaixo não sao necessárias devido ao uso de uma interface no momento e porque elas nao estao na especificação.
+        
 	public static void listaClientes(){
 		for(Cliente c : clientes)
 			exibeCliente(c);
@@ -58,5 +60,6 @@ public class GerenciadorClientes {
 		Cliente c = consultaClientePorCpf(cpf);
 		exibeCliente(c);
 	}
+        */
 	
 }
