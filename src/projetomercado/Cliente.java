@@ -141,6 +141,9 @@ public class Cliente {
 	public void alteraCliente(String nome, String cpf, String endereco,
 							  String telefone, String email, int status){
 		setNome(nome);
+		if(GerenciadorClientes.consultaClientePorCpf(cpf) != null) {
+			throw new RuntimeException("Cliente ja cadastrado no sistema.");
+		}
 		setCpf(cpf);
 		setEndereco(endereco);
 		setTelefone(telefone);

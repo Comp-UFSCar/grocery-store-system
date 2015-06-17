@@ -94,6 +94,10 @@ public class RegistroVendaTest {
     public void testSetNumeroNaN() throws Exception {
         rv1.setNumeroVenda("?");
     }
+    @Test(expected = RuntimeException.class)
+    public void testSetNumeroFloat() throws Exception {
+        rv1.setNumeroVenda("7.1");
+    }
 
     //setData tests
     //correct input
@@ -145,6 +149,10 @@ public class RegistroVendaTest {
         rv1.setQuantidadesEProdutos("4; 2");
     }
     @Test (expected = RuntimeException.class)
+    public void testSetQuantidadesEProdutosInvalidProduct() throws Exception {
+        rv1.setQuantidadesEProdutos("0.1; 2");
+    }
+    @Test (expected = RuntimeException.class)
     public void testSetQuantidadesEProdutosNoQuantity() throws Exception {
         rv1.setQuantidadesEProdutos("1");
     }
@@ -152,6 +160,15 @@ public class RegistroVendaTest {
     public void testSetQuantidadesEProdutosNoProducts() throws Exception {
         rv1.setQuantidadesEProdutos("");
     }
+    @Test (expected = RuntimeException.class)
+    public void testSetQuantidadesEProdutosInvalidQuantity() throws Exception {
+        rv1.setQuantidadesEProdutos("01; -1; 02; 10");
+    }
+    @Test (expected = RuntimeException.class)
+    public void testSetQuantidadesEProdutosQuantityZero() throws Exception {
+        rv1.setQuantidadesEProdutos("01; 0; 02; 10");
+    }
+
     @Test (expected = RuntimeException.class)
     public void testSetQuantidadesEProdutosProductNotEnoughQuantity() throws Exception {
         rv1.setQuantidadesEProdutos("2; 25.2f");

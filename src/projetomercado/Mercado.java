@@ -54,7 +54,7 @@ public class Mercado  {
 		System.exit(0);
 	}
 
-	private static double calculaFaturamento(int mes){
+	public static double calculaFaturamento(int mes){
 		ArrayList<RegistroVenda> registros;
 		double fat = 0;
 		

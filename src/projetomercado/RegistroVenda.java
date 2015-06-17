@@ -82,6 +82,9 @@ public class RegistroVenda {
 			if (produto == null){
 				throw new RuntimeException("Produto codigo " + cod + " nao encontrado");
 			}
+            if(qtd <= 0){
+                throw new RuntimeException("Quantidade  " + qtd + " invalida.");
+            }
 			if (produto.getEstoque() < qtd)
 				throw new RuntimeException("Produto codigo " + cod + " nao tem a quantidade pedida: " 
 						+ qtd + ", estoque: " + produto.getEstoque());
