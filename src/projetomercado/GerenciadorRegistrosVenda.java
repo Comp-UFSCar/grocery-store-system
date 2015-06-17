@@ -29,7 +29,9 @@ public class GerenciadorRegistrosVenda {
 		}
 		throw new RuntimeException("Registro nao encontrado");
 	}
-	
+	/*
+        
+            Essas funções abaixo não sao necessárias devido ao uso de uma interface no momento e porque elas nao estao na especificação.
 	public static void printRegistro(int codigo){
 		
 		RegistroVenda r = buscaPorNumero(codigo);
@@ -53,7 +55,7 @@ public class GerenciadorRegistrosVenda {
         }
             
 	}
-
+        */
 	public static ArrayList<RegistroVenda> getRegistros() {
 		return registros;
 	}

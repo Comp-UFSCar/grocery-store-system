@@ -60,7 +60,9 @@ public class GerenciadorProdutos {
         }
         return true;
     }
-
+    /*
+        Essas funções abaixo não sao necessárias devido ao uso de uma interface no momento e porque elas nao estao na especificação.
+   
     public static void listaProdutos(){
         for(Produto p : produtos)
             exibeProduto(p);
@@ -85,7 +87,7 @@ public class GerenciadorProdutos {
     	Produto p = consultaProdutoPorCodigo(codigo);
         exibeProduto(p);
     }
-
+    */
     public static ArrayList<Produto> getProdutos(){
         return produtos;
     }
