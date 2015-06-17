@@ -83,14 +83,15 @@ public class Mercado  {
 		dialog.refreshTable(GerenciadorProdutos.getProdutos());
 	}
 
-	public static void searchTableProduto(Produto p){
-		dialog.searchProduto(p);
+	public static void searchTable(Produto p){
+		dialog.searchTable(p);
+	}
+	public static void searchTable(Cliente c){
+		dialog.searchTable(c);
+	}
+	public static void searchTable(ArrayList<?> list)
+	{
+		dialog.searchTable(list);
 	}
 
-	public static void searchTableProduto(ArrayList<Integer> codigos){
-		ArrayList<Produto> ps = new ArrayList<Produto>();
-		for(int c : codigos )
-			ps.add(GerenciadorProdutos.consultaProdutoPorCodigo(c));
-		dialog.searchProduto(ps);
-	}
 }

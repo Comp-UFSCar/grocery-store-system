@@ -1,11 +1,9 @@
-package ui.produto;
+package ui.cliente;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import projetomercado.GerenciadorProdutos;
-import projetomercado.Mercado;
-import projetomercado.Produto;
+import projetomercado.*;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -13,19 +11,17 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-public class dialogConsultarProduto extends JDialog {
+public class dialogConsultarCliente extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JComboBox cboxTipo;
     private JTextField txtPesquisa;
 
     private Border borderError;
     private Border borderDefault;
 
-
-    public dialogConsultarProduto() {
-        setTitle("[Topicos Avancados A] Consultar Produto");
+    public dialogConsultarCliente() {
+        setTitle("[Topicos Avancados A] Consultar Cliente");
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -64,23 +60,11 @@ public class dialogConsultarProduto extends JDialog {
     private void onOK() {
         if (validateForm()) {
             try {
-                if (cboxTipo.getSelectedIndex() == 0) { // Codigo
-                    Produto p = GerenciadorProdutos.consultaProdutoPorCodigo(Integer.parseInt(txtPesquisa.getText()));
-                    if (p == null)
-                        JOptionPane.showMessageDialog(null, "Nenhum produto encontrado!", "Mensagem", JOptionPane.INFORMATION_MESSAGE);
-                    else {
-                        Mercado.searchTable(p);
-                    }
-                } else {   // Descricao
-                    ArrayList<Integer> codigos = GerenciadorProdutos.consultaPorDescricao(txtPesquisa.getText());
-                    if (codigos.get(0) == -1)
-                        JOptionPane.showMessageDialog(null, "Nenhum produto encontrado!", "Mensagem", JOptionPane.INFORMATION_MESSAGE);
-                    else {
-                        ArrayList<Produto> ps = new ArrayList<Produto>();
-                        for (int c : codigos)
-                            ps.add(GerenciadorProdutos.consultaProdutoPorCodigo(c));
-                        Mercado.searchTable(ps);
-                    }
+                Cliente c = GerenciadorClientes.consultaClientePorCpf(txtPesquisa.getText());
+                if (c == null)
+                    JOptionPane.showMessageDialog(null, "Nenhum cliente encontrado!", "Mensagem", JOptionPane.INFORMATION_MESSAGE);
+                else {
+                    Mercado.searchTable(c);
                 }
                 dispose();
             } catch (RuntimeException re) {
@@ -122,7 +106,6 @@ public class dialogConsultarProduto extends JDialog {
         contentPane.setLayout(new GridLayoutManager(2, 1, new Insets(10, 10, 10, 10), -1, -1));
         contentPane.setMinimumSize(new Dimension(400, 100));
         contentPane.setPreferredSize(new Dimension(450, 100));
-        contentPane.setRequestFocusEnabled(true);
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
         contentPane.add(panel1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
@@ -140,14 +123,11 @@ public class dialogConsultarProduto extends JDialog {
         final JPanel panel3 = new JPanel();
         panel3.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
         contentPane.add(panel3, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        cboxTipo = new JComboBox();
-        final DefaultComboBoxModel defaultComboBoxModel1 = new DefaultComboBoxModel();
-        defaultComboBoxModel1.addElement("Codigo");
-        defaultComboBoxModel1.addElement("Descricao");
-        cboxTipo.setModel(defaultComboBoxModel1);
-        panel3.add(cboxTipo, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         txtPesquisa = new JTextField();
         panel3.add(txtPesquisa, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        final JLabel label1 = new JLabel();
+        label1.setText("CPF");
+        panel3.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**

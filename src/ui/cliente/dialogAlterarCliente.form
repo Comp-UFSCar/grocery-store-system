@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ui.cliente.dialogInserirCliente">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ui.cliente.dialogAlterarCliente">
   <grid id="cbd77" binding="contentPane" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="10" left="10" bottom="10" right="10"/>
     <constraints>
       <xy x="48" y="54" width="436" height="297"/>
     </constraints>
     <properties>
-      <minimumSize width="350" height="250"/>
+      <minimumSize width="350" height="280"/>
       <preferredSize width="350" height="280"/>
     </properties>
     <border type="none"/>
@@ -52,7 +52,7 @@
           </grid>
         </children>
       </grid>
-      <grid id="e3588" layout-manager="GridLayoutManager" row-count="7" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="daf7f" layout-manager="GridLayoutManager" row-count="7" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -60,7 +60,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="5f665" class="javax.swing.JLabel">
+          <component id="e695b" class="javax.swing.JLabel">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -68,12 +68,12 @@
               <text value="Nome"/>
             </properties>
           </component>
-          <vspacer id="19785">
+          <vspacer id="1ab6f">
             <constraints>
               <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
             </constraints>
           </vspacer>
-          <component id="eaa91" class="javax.swing.JTextField" binding="txtNome">
+          <component id="fe0ba" class="javax.swing.JTextField" binding="txtNome">
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
@@ -81,7 +81,7 @@
             </constraints>
             <properties/>
           </component>
-          <component id="5530a" class="javax.swing.JLabel">
+          <component id="1f4bf" class="javax.swing.JLabel">
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -89,7 +89,7 @@
               <text value="CPF"/>
             </properties>
           </component>
-          <component id="5bd35" class="javax.swing.JTextField" binding="txtCpf">
+          <component id="4f7db" class="javax.swing.JTextField" binding="txtCpf">
             <constraints>
               <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
@@ -97,7 +97,7 @@
             </constraints>
             <properties/>
           </component>
-          <component id="9ddf3" class="javax.swing.JLabel">
+          <component id="e5291" class="javax.swing.JLabel">
             <constraints>
               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -105,7 +105,7 @@
               <text value="Endereco"/>
             </properties>
           </component>
-          <component id="cfb49" class="javax.swing.JTextField" binding="txtEndereco">
+          <component id="12dbe" class="javax.swing.JTextField" binding="txtEndereco">
             <constraints>
               <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
@@ -113,7 +113,7 @@
             </constraints>
             <properties/>
           </component>
-          <component id="ec68" class="javax.swing.JLabel">
+          <component id="d8c60" class="javax.swing.JLabel">
             <constraints>
               <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -121,7 +121,7 @@
               <text value="Telefone"/>
             </properties>
           </component>
-          <component id="f1775" class="javax.swing.JLabel">
+          <component id="76424" class="javax.swing.JLabel">
             <constraints>
               <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -129,7 +129,7 @@
               <text value="Status"/>
             </properties>
           </component>
-          <component id="de542" class="javax.swing.JComboBox" binding="cboxStatusCliente">
+          <component id="40660" class="javax.swing.JComboBox" binding="cboxStatusCliente">
             <constraints>
               <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -140,7 +140,7 @@
               </model>
             </properties>
           </component>
-          <component id="b90d1" class="javax.swing.JLabel">
+          <component id="d141e" class="javax.swing.JLabel">
             <constraints>
               <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -148,7 +148,7 @@
               <text value="E-mail"/>
             </properties>
           </component>
-          <component id="28892" class="javax.swing.JTextField" binding="txtEmail">
+          <component id="1d8d6" class="javax.swing.JTextField" binding="txtEmail">
             <constraints>
               <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
@@ -156,7 +156,7 @@
             </constraints>
             <properties/>
           </component>
-          <component id="44c35" class="javax.swing.JTextField" binding="txtTelefone">
+          <component id="7f305" class="javax.swing.JTextField" binding="txtTelefone">
             <constraints>
               <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
