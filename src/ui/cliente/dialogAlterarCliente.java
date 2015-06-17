@@ -3,6 +3,7 @@ package ui.cliente;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
+import projetomercado.Cliente;
 import projetomercado.GerenciadorClientes;
 import projetomercado.Mercado;
 
@@ -11,28 +12,35 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
 
-public class dialogInserirCliente extends JDialog {
+public class dialogAlterarCliente extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
     private JTextField txtNome;
-    private JComboBox cboxStatusCliente;
     private JTextField txtCpf;
     private JTextField txtEndereco;
-    private JTextField txtTelefone;
+    private JComboBox cboxStatusCliente;
     private JTextField txtEmail;
+    private JTextField txtTelefone;
     private Border borderError;
     private Border borderDefault;
+    private Cliente c;
 
-    public dialogInserirCliente() {
-        setTitle("[Topicos Avancados A] Inserir Cliente");
+    public dialogAlterarCliente(Cliente cliente) {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
-        cboxStatusCliente.setSelectedIndex(1);
         borderError = BorderFactory.createLineBorder(Color.red);
         borderDefault = txtNome.getBorder();
+        c = cliente;
+        txtNome.setText(c.getNome());
+        txtCpf.setText(c.getCpf());
+        txtEndereco.setText(c.getEndereco());
+        txtEmail.setText(c.getEmail());
+        txtTelefone.setText(c.getTelefone());
+        cboxStatusCliente.setSelectedIndex(c.getStatus());
+
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -65,7 +73,7 @@ public class dialogInserirCliente extends JDialog {
     private void onOK() {
         if (validateForm()) {
             try {
-                GerenciadorClientes.insereCliente(
+                c.alteraCliente(
                         txtNome.getText(),
                         txtCpf.getText(),
                         txtEndereco.getText(),
@@ -73,7 +81,7 @@ public class dialogInserirCliente extends JDialog {
                         txtEmail.getText(),
                         cboxStatusCliente.getSelectedIndex()
                 );
-                System.out.println("Cliente inserido!");
+                System.out.println("Cliente alterado");
                 Mercado.refreshTable(GerenciadorClientes.getClientes());
                 dispose();
             } catch (RuntimeException re) {
@@ -140,7 +148,7 @@ public class dialogInserirCliente extends JDialog {
     private void $$$setupUI$$$() {
         contentPane = new JPanel();
         contentPane.setLayout(new GridLayoutManager(2, 1, new Insets(10, 10, 10, 10), -1, -1));
-        contentPane.setMinimumSize(new Dimension(350, 250));
+        contentPane.setMinimumSize(new Dimension(350, 280));
         contentPane.setPreferredSize(new Dimension(350, 280));
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
