@@ -14,6 +14,7 @@ import ui.produto.dialogAlterarEstoque;
 import ui.produto.dialogAlterarProduto;
 import ui.produto.dialogConsultarProduto;
 import ui.produto.dialogInserirProduto;
+import ui.venda.dialogVenda;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -38,9 +39,16 @@ public class MainUI extends JDialog {
     private JButton btnAlterarCliente;
     private JButton btnConsultarCliente;
     private JButton btnListarClientes;
+    private JTable tblRegistroProdutos;
+    private JTable tblRegistroVendas;
+    private JButton btnNovaVenda;
+    private JButton btnCalcularFaturamento;
 
     private DefaultTableModel modelProdutos;
     private DefaultTableModel modelClientes;
+    private DefaultTableModel modelRegistroVendas;
+    private DefaultTableModel modelRegistroProdutos;
+
     // endregion
 
     public MainUI() {
@@ -121,6 +129,12 @@ public class MainUI extends JDialog {
                 onListarClientes();
             }
         });
+        btnNovaVenda.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onNovaVenda();
+            }
+        });
         //endregion
     }
 
@@ -143,9 +157,35 @@ public class MainUI extends JDialog {
                 return false;
             }
         };
+        setTblClientesPreferences();
+
+        setModelRegistroVendas();
+        tblRegistroVendas = new JTable(modelRegistroVendas) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        setModelRegistroProdutos();
+        tblRegistroProdutos = new JTable(modelRegistroProdutos) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
     }
 
     // region Listeners Methods
+
+    // region Registro de Vendas
+    private void onNovaVenda() {
+        dialogVenda dVenda = new dialogVenda();
+        dVenda.pack();
+        dVenda.setLocationRelativeTo(null);
+        dVenda.setVisible(true);
+    }
+    // endregion
 
     // region Clientes
     private void onListarClientes() {
@@ -243,8 +283,9 @@ public class MainUI extends JDialog {
     }
     // endregion
 
-    // region Table Methods
+    // region Tables
 
+    // region Methods
     private void populateTable(ArrayList<?> lista) {
         if (lista.size() > 0) {
             if (lista.get(0) instanceof Produto)
@@ -316,6 +357,7 @@ public class MainUI extends JDialog {
                 insertRow(c);
         }
     }
+    // endregion
 
     // region Define Table Models and Preferences
     private void setModelProdutos() {
@@ -362,6 +404,52 @@ public class MainUI extends JDialog {
             @Override
             public String getColumnName(int index) {
                 return cliente[index];
+            }
+        };
+    }
+
+    private void setTblClientesPreferences() {
+        DefaultTableCellRenderer centered = new DefaultTableCellRenderer();
+        centered.setHorizontalAlignment(JLabel.CENTER);
+
+        ((DefaultTableCellRenderer) tblClientes.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
+        tblClientes.getColumnModel().getColumn(5).setCellRenderer(centered);
+
+        tblClientes.getColumnModel().getColumn(0).setPreferredWidth(130);
+        tblClientes.getColumnModel().getColumn(1).setPreferredWidth(70);
+        tblClientes.getColumnModel().getColumn(2).setPreferredWidth(130);
+        tblClientes.getColumnModel().getColumn(4).setPreferredWidth(130);
+        tblClientes.getColumnModel().getColumn(5).setPreferredWidth(30);
+    }
+
+    private void setModelRegistroVendas() {
+        modelRegistroVendas = new DefaultTableModel() {
+            String[] rVendas = {"Numero Registro", "CPF", "Data"};
+
+            @Override
+            public int getColumnCount() {
+                return rVendas.length;
+            }
+
+            @Override
+            public String getColumnName(int index) {
+                return rVendas[index];
+            }
+        };
+    }
+
+    private void setModelRegistroProdutos() {
+        modelRegistroProdutos = new DefaultTableModel() {
+            String[] rProdutos = {"Codigo", "Quantidade"};
+
+            @Override
+            public int getColumnCount() {
+                return rProdutos.length;
+            }
+
+            @Override
+            public String getColumnName(int index) {
+                return rProdutos[index];
             }
         };
     }
@@ -439,6 +527,28 @@ public class MainUI extends JDialog {
         btnListarClientes = new JButton();
         btnListarClientes.setText("Listar Tudo");
         panel6.add(btnListarClientes, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JPanel panel7 = new JPanel();
+        panel7.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
+        tabbedPane.addTab("Registro de Vendas", panel7);
+        final JPanel panel8 = new JPanel();
+        panel8.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
+        panel7.add(panel8, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        final JScrollPane scrollPane3 = new JScrollPane();
+        panel8.add(scrollPane3, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        scrollPane3.setBorder(BorderFactory.createTitledBorder("Vendas"));
+        scrollPane3.setViewportView(tblRegistroVendas);
+        final JScrollPane scrollPane4 = new JScrollPane();
+        panel8.add(scrollPane4, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        scrollPane4.setBorder(BorderFactory.createTitledBorder("Produtos"));
+        scrollPane4.setViewportView(tblRegistroProdutos);
+        final JPanel panel9 = new JPanel();
+        panel9.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
+        panel7.add(panel9, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        final Spacer spacer3 = new Spacer();
+        panel9.add(spacer3, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        btnNovaVenda = new JButton();
+        btnNovaVenda.setText("Nova Venda");
+        panel9.add(btnNovaVenda, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**
