@@ -3,11 +3,16 @@ package ui.venda;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
+import com.sun.deploy.util.StringUtils;
 import projetomercado.Cliente;
+import projetomercado.GerenciadorRegistrosVenda;
+import projetomercado.Mercado;
 import projetomercado.Produto;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -91,17 +96,18 @@ public class dialogVenda extends JDialog {
                 onRemoverProd();
             }
         });
-        tblVenda.addMouseListener(new MouseAdapter() {
+        tblVenda.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                onTableClicked();
+            public void valueChanged(ListSelectionEvent e) {
+                if (tblVenda.getSelectedRow() >= 0)
+                    onTableClicked();
             }
         });
     }
 
     private int cod;
     private double qtd;
+
     private void onTableClicked() {
         txtProdCod.setText(String.valueOf(tblVenda.getValueAt(tblVenda.getSelectedRow(), 0)));
         txtProdQtd.setText(String.valueOf(tblVenda.getValueAt(tblVenda.getSelectedRow(), 1)));
@@ -145,14 +151,16 @@ public class dialogVenda extends JDialog {
         if (validateForm()) {
             try {
                 StringBuilder sb = new StringBuilder();
-                sb.append(txtNumRegistro.getText() + " , ");
-                sb.append(txtCpf.getText() + " , ");
+                sb.append(txtNumRegistro.getText() + " ; ");
+                sb.append(txtCpf.getText() + " ; ");
                 sb.append(txtData.getText());
                 for (Map.Entry<Integer, Double> entry : produtos.entrySet()) {
-                    sb.append(" , " + entry.getKey() + " , ");
+                    sb.append(" ; " + entry.getKey() + " ; ");
                     sb.append(entry.getValue());
                 }
                 System.out.println(sb);
+                GerenciadorRegistrosVenda.insereRegistroVenda(sb.toString());
+                Mercado.refreshTable(GerenciadorRegistrosVenda.getRegistros());
                 dispose();
             } catch (RuntimeException re) {
                 JOptionPane.showMessageDialog(null, re, "Erro", JOptionPane.ERROR_MESSAGE);
@@ -161,7 +169,6 @@ public class dialogVenda extends JDialog {
     }
 
     private void onCancel() {
-// add your code here if necessary
         dispose();
     }
 
@@ -238,10 +245,16 @@ public class dialogVenda extends JDialog {
         if (txtProdCod.getText().isEmpty()) {
             txtProdCod.setBorder(borderError);
             error++;
+        } else if (!txtProdCod.getText().matches("\\d+")) {
+            txtProdCod.setBorder(borderError);
+            error++;
         } else
             txtProdCod.setBorder(borderDefault);
 
         if (txtProdQtd.getText().isEmpty()) {
+            txtProdQtd.setBorder(borderError);
+            error++;
+        } else if (!txtProdQtd.getText().matches("\\d+.?\\d+")) {
             txtProdQtd.setBorder(borderError);
             error++;
         } else

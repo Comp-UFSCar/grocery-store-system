@@ -89,7 +89,7 @@ public class dialogAlterarProduto extends JDialog {
                         Double.parseDouble(txtEstoque.getText()),
                         cboxStatus.getSelectedIndex());
                 System.out.println("Produto Alterado!");
-                Mercado.updateTableProduto();
+                Mercado.refreshTable(GerenciadorProdutos.getProdutos());
                 dispose();
             } catch (RuntimeException re) {
                 System.err.println(re);

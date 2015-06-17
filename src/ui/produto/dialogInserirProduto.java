@@ -76,7 +76,7 @@ public class dialogInserirProduto extends JDialog {
                         cboxStatus.getSelectedIndex()
                 );
                 System.out.println("Produto Inserido!");
-                Mercado.updateTableProduto();
+                Mercado.refreshTable(GerenciadorProdutos.getProdutos());
                 dispose();
             } catch (RuntimeException re) {
                 System.err.println(re);

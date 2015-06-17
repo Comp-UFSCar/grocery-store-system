@@ -3,13 +3,11 @@ package ui;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import projetomercado.Cliente;
-import projetomercado.GerenciadorClientes;
-import projetomercado.GerenciadorProdutos;
-import projetomercado.Produto;
+import projetomercado.*;
 import ui.cliente.dialogAlterarCliente;
 import ui.cliente.dialogConsultarCliente;
 import ui.cliente.dialogInserirCliente;
+import ui.faturamento.dialogFaturamento;
 import ui.produto.dialogAlterarEstoque;
 import ui.produto.dialogAlterarProduto;
 import ui.produto.dialogConsultarProduto;
@@ -17,11 +15,17 @@ import ui.produto.dialogInserirProduto;
 import ui.venda.dialogVenda;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MainUI extends JDialog {
 
@@ -48,7 +52,7 @@ public class MainUI extends JDialog {
     private DefaultTableModel modelClientes;
     private DefaultTableModel modelRegistroVendas;
     private DefaultTableModel modelRegistroProdutos;
-
+    private SimpleDateFormat simpleDate;
     // endregion
 
     public MainUI() {
@@ -71,6 +75,9 @@ public class MainUI extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
+        simpleDate = new SimpleDateFormat("dd/MM/yyyy");
+
         //endregion
 
         // region ActionListeners
@@ -135,6 +142,18 @@ public class MainUI extends JDialog {
                 onNovaVenda();
             }
         });
+        tblRegistroVendas.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                onRegistroVendasClicked();
+            }
+        });
+        btnCalcularFaturamento.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onCalcularFaturamento();
+            }
+        });
         //endregion
     }
 
@@ -160,12 +179,15 @@ public class MainUI extends JDialog {
         setTblClientesPreferences();
 
         setModelRegistroVendas();
+        populateTable(GerenciadorRegistrosVenda.getRegistros());
         tblRegistroVendas = new JTable(modelRegistroVendas) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
+
         };
+        setTblRegistroVendasPreferences();
 
         setModelRegistroProdutos();
         tblRegistroProdutos = new JTable(modelRegistroProdutos) {
@@ -173,17 +195,42 @@ public class MainUI extends JDialog {
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
+
         };
+
     }
 
     // region Listeners Methods
 
     // region Registro de Vendas
+    private void onCalcularFaturamento() {
+        dialogFaturamento dFaturamento = new dialogFaturamento();
+        dFaturamento.pack();
+        dFaturamento.setLocationRelativeTo(null);
+        dFaturamento.setVisible(true);
+    }
+
     private void onNovaVenda() {
         dialogVenda dVenda = new dialogVenda();
         dVenda.pack();
         dVenda.setLocationRelativeTo(null);
         dVenda.setVisible(true);
+    }
+
+    private void onRegistroVendasClicked() {
+        int row = tblRegistroVendas.getSelectedRow();
+        if (row >= 0) {
+            clearTable(modelRegistroProdutos);
+
+            int qtd = GerenciadorRegistrosVenda.getRegistros().get(row).getQuantidadeItens();
+            for (int i = 0; i < qtd; i++) {
+
+                modelRegistroProdutos.addRow(new Object[]{
+                        GerenciadorRegistrosVenda.getRegistros().get(row).getProdutos().get(i).getCodigo(),
+                        GerenciadorRegistrosVenda.getRegistros().get(row).getQuantidades().get(i)
+                });
+            }
+        }
     }
     // endregion
 
@@ -294,6 +341,9 @@ public class MainUI extends JDialog {
             else if (lista.get(0) instanceof Cliente)
                 for (Cliente c : (ArrayList<Cliente>) lista)
                     insertRow(c);
+            else if (lista.get(0) instanceof RegistroVenda)
+                for (RegistroVenda v : (ArrayList<RegistroVenda>) lista)
+                    insertRow(v);
         }
     }
 
@@ -311,6 +361,9 @@ public class MainUI extends JDialog {
         } else if (list.get(0) instanceof Cliente) {
             clearTable(modelClientes);
             populateTable(GerenciadorClientes.getClientes());
+        } else if (list.get(0) instanceof RegistroVenda) {
+            clearTable(modelRegistroVendas);
+            populateTable(GerenciadorRegistrosVenda.getRegistros());
         }
     }
 
@@ -326,6 +379,12 @@ public class MainUI extends JDialog {
         String status = defineStatus(c.getStatus());
         modelClientes.addRow(new Object[]{
                 c.getNome(), c.getCpf(), c.getEndereco(), c.getTelefone(), c.getEmail(), status
+        });
+    }
+
+    private void insertRow(RegistroVenda v) {
+        modelRegistroVendas.addRow(new Object[]{
+                v.getNumero(), v.getCliente().getCpf(), v.getData()
         });
     }
 
@@ -438,6 +497,23 @@ public class MainUI extends JDialog {
         };
     }
 
+    private void setTblRegistroVendasPreferences() {
+        TableCellRenderer dateRenderer = new DefaultTableCellRenderer() {
+            SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
+
+            public Component getTableCellRendererComponent(JTable table,
+                                                           Object value, boolean isSelected, boolean hasFocus,
+                                                           int row, int column) {
+                if (value instanceof Date) {
+                    value = f.format(value);
+                }
+                return super.getTableCellRendererComponent(table, value, isSelected,
+                        hasFocus, row, column);
+            }
+        };
+        tblRegistroVendas.getColumnModel().getColumn(2).setCellRenderer(dateRenderer);
+    }
+
     private void setModelRegistroProdutos() {
         modelRegistroProdutos = new DefaultTableModel() {
             String[] rProdutos = {"Codigo", "Quantidade"};
@@ -542,13 +618,16 @@ public class MainUI extends JDialog {
         scrollPane4.setBorder(BorderFactory.createTitledBorder("Produtos"));
         scrollPane4.setViewportView(tblRegistroProdutos);
         final JPanel panel9 = new JPanel();
-        panel9.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
+        panel9.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
         panel7.add(panel9, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         final Spacer spacer3 = new Spacer();
         panel9.add(spacer3, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         btnNovaVenda = new JButton();
         btnNovaVenda.setText("Nova Venda");
         panel9.add(btnNovaVenda, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        btnCalcularFaturamento = new JButton();
+        btnCalcularFaturamento.setText("Calcular Faturamento");
+        panel9.add(btnCalcularFaturamento, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**
@@ -562,3 +641,5 @@ public class MainUI extends JDialog {
 
     //endregion
 }
+
+
