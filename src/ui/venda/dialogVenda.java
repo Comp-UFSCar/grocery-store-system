@@ -3,7 +3,7 @@ package ui.venda;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import com.sun.deploy.util.StringUtils;
+//import com.sun.deploy.util.StringUtils;
 import projetomercado.Cliente;
 import projetomercado.GerenciadorRegistrosVenda;
 import projetomercado.Mercado;
